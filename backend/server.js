@@ -2,24 +2,33 @@ const Card = require("./model/listing.js");
 const User = require("./model/user.js");
 const Owner = require("./model/owner.js");
 // HERE WE CONNECT MONGOOSE -
-const mongoose = require('mongoose');
-main()
-.then(()=>{console.log("connection success");})
-.catch(err=>{console.log(err)});
-async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/airbnb');
-}
+// server.js or app.js
+const mongoose = require("mongoose");
+
+// Put your MongoDB connection string here
+const MONGO_URI = "mongodb+srv://sanyam:sanyam@123!@cluster0.xz6teaa.mongodb.net/airbnb?retryWrites=true&w=majority";
+
+// Connect to MongoDB
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("MongoDB connected"))
+.catch((err) => console.error("MongoDB connection error:", err));
 
 // HERE WE USE EXPRESS
 const express= require('express');
 const app =express();
 
 // IT USES BECAUSE FRONTEND AND BACKEND BOTH RUN ON DIFFRENT PORT SO FRONTEND NOT ACCEPT BACKEND BECAUSE OF DIFFRENT PORT
-const cors = require("cors")
-app.use(cors());
-app.listen(8081,(req,res)=>{
-    console.log("i am listening at 8081");
-})
+const cors = require("cors");
+app.use(cors({ origin: "https://project1-peach-eight.vercel.app", credentials: true }));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+ 
 app.get("/airbnb/all-listing",async(req,res)=>{
     const cards = await Card.find();
     console.log(cards);
