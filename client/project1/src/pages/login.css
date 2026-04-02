@@ -1,0 +1,47 @@
+body {
+    background-color: #f7f7f7;
+  }
+  .login-card {
+    max-width: 420px;
+    margin: 80px auto;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 30px 35px;
+  }
+   
+  .btn-airbnb {
+    background: linear-gradient(135deg, #ff385c, #ff7a5c);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-airbnb:hover {
+    background: linear-gradient(135deg, #e03150, #ff5a5f);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 56, 92, 0.3);
+  }
+  
+  .btn-airbnb:active {
+    transform: scale(0.98);
+  }
+  .btn-airbnb:hover {
+    background-color: #e03152;
+    color: white;
+  }
+  .form-control:focus {
+    border-color: #ff385c;
+    box-shadow: 0 0 0 0.1rem rgba(255,56,92,0.25);
+  }
+  a {
+    color: #ff385c;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
