@@ -30,7 +30,7 @@ function Login() {
        
           let exist=false;
       if(role==="user"){
-       let res = await axios.get("http://localhost:8081/airbnb/login/user");
+       let res = await axios.get("https://project1-backend-qktj.onrender.com/airbnb/login/user");
        const user = res.data.find(u => u.username === formData.username);
        if(user){
         localStorage.setItem("user", JSON.stringify({
@@ -41,7 +41,7 @@ function Login() {
       }
       }
       if(role==="owner"){
-        let res = await axios.get("http://localhost:8081/airbnb/login/owner");
+        let res = await axios.get("https://project1-backend-qktj.onrender.com/airbnb/login/owner");
         const owner = res.data.find(u => u.username === formData.username && u.contactno === formData.contactno);
         if(owner){
           localStorage.setItem("user", JSON.stringify({

@@ -52,7 +52,7 @@ function Airbnbyourhome() {
         return;
       }
 
-      await axios.post("http://localhost:8081/airbnb/airbnbyourhome", {
+      await axios.post("https://project1-backend-qktj.onrender.com/airbnb/airbnbyourhome", {
         ...formData,
         role: user.role,
         ownerId: user.id   // 🔥🔥🔥 THIS WAS MISSING
