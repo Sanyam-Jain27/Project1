@@ -20,9 +20,10 @@ mongoose.connect(MONGO_URI, {
 const express= require('express');
 const app =express();
 
-// IT USES BECAUSE FRONTEND AND BACKEND BOTH RUN ON DIFFRENT PORT SO FRONTEND NOT ACCEPT BACKEND BECAUSE OF DIFFRENT PORT
+// I USES BECAUSE FRONTEND AND BACKEND BOTH RUN ON DIFFRENT PORT SO FRONTEND NOT ACCEPT BACKEND BECAUSE OF DIFFRENT PORT
 const cors = require("cors");
 app.use(cors({ origin: "https://project1-peach-eight.vercel.app", credentials: true }));
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
