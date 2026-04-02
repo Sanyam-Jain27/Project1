@@ -9,7 +9,7 @@ function AllList(){
     const [listings , setListings] = useState([])
      
     // async function handleSubmit(){
-    //    const res = await axios.get(`http://localhost:8081/airbnb/check/${hid}`);
+    //    const res = await axios.get(`https://your-backend.onrender.com/airbnb/check/${hid}`);
     //    if(res){
     //     navigate("")
     //    }
@@ -18,7 +18,7 @@ function AllList(){
 
         async function fetchListings(){
             try{
-                const res = await axios.get("http://localhost:8081/airbnb/all-listing")
+                const res = await axios.get("https://your-backend.onrender.com/airbnb/all-listing")
                 setListings(res.data)
             }
             catch(err){
