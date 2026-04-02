@@ -7,7 +7,9 @@ main()
 .then(()=>{console.log("connection success");})
 .catch(err=>{console.log(err)});
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/airbnb');
+    // This will use Atlas in production and local in development
+    const dbUrl = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/airbnb';
+    await mongoose.connect(dbUrl);
 }
 
 // HERE WE USE EXPRESS
@@ -17,9 +19,10 @@ const app =express();
 // IT USES BECAUSE FRONTEND AND BACKEND BOTH RUN ON DIFFRENT PORT SO FRONTEND NOT ACCEPT BACKEND BECAUSE OF DIFFRENT PORT
 const cors = require("cors")
 app.use(cors());
-app.listen(8081,(req,res)=>{
-    console.log("i am listening at 8081");
-})
+const PORT = process.env.PORT || 8081;
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
+});
 app.get("/airbnb/all-listing",async(req,res)=>{
     const cards = await Card.find();
     console.log(cards);
