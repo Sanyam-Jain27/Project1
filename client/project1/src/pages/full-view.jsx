@@ -19,7 +19,7 @@ function FullView(){
    // 🔥 DELETE (OWNER ONLY)
    async function handleDelete(){
     try{
-       await axios.delete(`https://your-backend.onrender.com/airbnb/delete/${id}`, {
+       await axios.delete(`http://localhost:8081/airbnb/delete/${id}`, {
          data: { userId: user.id }
        });
 
@@ -47,7 +47,7 @@ function FullView(){
     }
 
     try{
-      await axios.post(`https://your-backend.onrender.com/airbnb/review/${id}`, {
+      await axios.post(`http://localhost:8081/airbnb/review/${id}`, {
         comment: newReview.comment,
         rating: newReview.rating,
         userId: user.id,
@@ -57,11 +57,11 @@ function FullView(){
       toast.success("Review added!");
 
       // 🔥 REFRESH REVIEWS
-      const res1 = await axios.get(`https://your-backend.onrender.com/airbnb/review/${id}`);
+      const res1 = await axios.get(`http://localhost:8081/airbnb/review/${id}`);
       setReviews(res1.data);
 
       // 🔥 REFRESH LISTING (avg rating)
-      const res2 = await axios.get(`https://your-backend.onrender.com/airbnb/full-view/${id}`);
+      const res2 = await axios.get(`http://localhost:8081/airbnb/full-view/${id}`);
       setItem(res2.data);
 
       setNewReview({ comment: "", rating: 0 });
@@ -75,12 +75,12 @@ function FullView(){
    // 🔥 FETCH DATA
    useEffect(()=>{
       async function fetchData(){
-         const res = await axios.get(`https://your-backend.onrender.com/airbnb/full-view/${id}`);
+         const res = await axios.get(`http://localhost:8081/airbnb/full-view/${id}`);
          setItem(res.data)
       }
 
       async function fetchReviews(){
-         const res = await axios.get(`https://your-backend.onrender.com/airbnb/review/${id}`);
+         const res = await axios.get(`http://localhost:8081/airbnb/review/${id}`);
          setReviews(res.data)
       }
 

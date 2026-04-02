@@ -32,18 +32,18 @@ function SignUp() {
     try { 
       const url =
         role === "owner"
-          ? "https://your-backend.onrender.com/airbnb/signup/owner"
-          : "https://your-backend.onrender.com/airbnb/signup/user";
+          ? "http://localhost:8081/airbnb/signup/owner"
+          : "http://localhost:8081/airbnb/signup/user";
           let exist=false;
       if(role==="user"){
-       let res = await axios.get("https://your-backend.onrender.com/airbnb/signup/user");
+       let res = await axios.get("http://localhost:8081/airbnb/signup/user");
        const user = res.data.find(u => u.username === formData.username);
        if(user){
         exist=true;
        }
       }
       if(role==="owner"){
-        let res = await axios.get("https://your-backend.onrender.com/airbnb/signup/owner");
+        let res = await axios.get("http://localhost:8081/airbnb/signup/owner");
         const owner = res.data.find(u => u.username === formData.username && u.contactno === formData.contactno);
         if(owner){
             exist =true;

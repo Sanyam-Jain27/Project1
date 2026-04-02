@@ -31,7 +31,7 @@ function Edit() {
   async function handleSubmit(e) {
     e.preventDefault(); // prevent page reload
     try {
-      await axios.patch(`https://your-backend.onrender.com/airbnb/edit/${id}`, formData);
+      await axios.patch(`http://localhost:8081/airbnb/edit/${id}`, formData);
       toast.success("Listing Edited successfully!");
       navigate(`/airbnb/full-view/${id}`); // go to all listings page
     } catch (err) {
@@ -43,7 +43,7 @@ function Edit() {
   useEffect(()=>{
 
     async function fetchData(){
-       const res = await axios.get(`https://your-backend.onrender.com/airbnb/full-view/${id}`);
+       const res = await axios.get(`http://localhost:8081/airbnb/full-view/${id}`);
        setItem(res.data)
     }
 
