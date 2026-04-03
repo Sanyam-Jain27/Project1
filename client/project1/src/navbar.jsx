@@ -176,12 +176,17 @@ function Navbar() {
                 </li>
               </>
             ) : (
-              
+              <>
+              <li className="nav-item">
+  <span className="user-pill">
+    {user.name} • {user.role}
+  </span>
+</li>
                 <li>
                 <button onClick={handleLogout} className="logout-btn">
   Logout
 </button>
-              </li>
+              </li></>
             )}
 
           </ul>
