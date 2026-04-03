@@ -50,8 +50,17 @@ function AllList(){
 
                             {/* Image clickable */}
                             
-                            <NavLink to= {`/airbnb/full-view/${card._id}`}  >
-                            <button className="p-0 border-0 bg-transparent w-100">
+                            {/* <NavLink to= {`/airbnb/full-view/${card._id}`}  > */}
+                            <button onClick={() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if(!user){
+      alert("Login first");
+      return;
+    }
+
+    navigate(`/airbnb/full-view/${card._id}`);;
+  }}className="p-0 border-0 bg-transparent w-100">
                                 <img 
                                     src={card.img}
                                     className="card-img-top"
@@ -59,7 +68,7 @@ function AllList(){
                                     style={{height:"220px",objectFit:"cover"}}
                                 /> 
                             </button>
-                            </NavLink>
+                            {/* </NavLink> */}
                             
 
                             {/* Card body */}
