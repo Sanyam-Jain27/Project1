@@ -57,7 +57,7 @@ function Login() {
       }
   
       
-      toast.success("Login Successfully!");
+      toast.success(`Login Successfully!${role}:${owner.name||user.name}`);
       navigate(`/airbnb`);}
       
      catch (err) {
