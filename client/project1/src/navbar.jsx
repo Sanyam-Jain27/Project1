@@ -1,24 +1,17 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 import "./navbar.css";
 
 function Navbar() {
 
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
-
-  // Load user from localStorage
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
-  }, []);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   function handleLogout() {
     localStorage.removeItem("user");
-    setUser(null); // 🔥 important
     alert("Logged out successfully");
     navigate("/airbnb");
+    // window.location.reload(); // refresh UI
   }
 
   return (
@@ -60,13 +53,15 @@ function Navbar() {
                 </NavLink>
               </li>
 
-              {/* Airbnb your Home */}
+              {/* Airbnb your Home (protected) */}
               <li className="nav-item">
                 <NavLink
                   to="#"
                   className="btn-airbnb-outline ms-lg-2"
                   onClick={(e) => {
                     e.preventDefault();
+
+                    const user = JSON.parse(localStorage.getItem("user"));
 
                     if (!user) {
                       alert("Login first");
@@ -86,7 +81,7 @@ function Navbar() {
                 </NavLink>
               </li>
 
-              {/* Conditional Rendering */}
+              {/* 🔥 CONDITIONAL RENDERING */}
               {!user ? (
                 <>
                   <li className="nav-item">
@@ -104,8 +99,8 @@ function Navbar() {
               ) : (
                 <li className="nav-item">
                   <button onClick={handleLogout} className="logout-btn">
-                    Logout
-                  </button>
+  Logout
+</button>
                 </li>
               )}
 
@@ -141,6 +136,8 @@ function Navbar() {
                 onClick={(e) => {
                   e.preventDefault();
 
+                  const user = JSON.parse(localStorage.getItem("user"));
+
                   if (!user) {
                     alert("Login first");
                     navigate("/airbnb/login");
@@ -172,10 +169,10 @@ function Navbar() {
                 </li>
               </>
             ) : (
-              <li>
+                <li>
                 <button onClick={handleLogout} className="logout-btn">
-                  Logout
-                </button>
+  Logout
+</button>
               </li>
             )}
 
