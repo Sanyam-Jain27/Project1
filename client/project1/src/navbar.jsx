@@ -11,7 +11,7 @@ function Navbar() {
     localStorage.removeItem("user");
     alert("Logged out successfully");
     navigate("/airbnb");
-    window.location.reload(); // refresh UI
+    // window.location.reload(); // refresh UI
   }
 
   return (
