@@ -4,7 +4,11 @@ import './all-listing.css'
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
+
 function AllList(){
+    const navigate = useNavigate();
     // let {hid}=useParams();
     const [listings , setListings] = useState([])
      
@@ -79,7 +83,7 @@ function AllList(){
       return;
     }
 
-    window.location.href = `/airbnb/full-view/${card._id}`;
+    navigate(`/airbnb/full-view/${card._id}`);;
   }}
 >
   View Details
