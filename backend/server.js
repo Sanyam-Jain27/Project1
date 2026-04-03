@@ -18,7 +18,11 @@ const app =express();
 
 // IT USES BECAUSE FRONTEND AND BACKEND BOTH RUN ON DIFFRENT PORT SO FRONTEND NOT ACCEPT BACKEND BECAUSE OF DIFFRENT PORT
 const cors = require("cors")
-app.use(cors());
+app.use(cors({
+    origin:[ 
+        "http://localhost:5173",
+        "https://project1-peach-eight.vercel.app"]
+  }));
 const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
