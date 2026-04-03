@@ -35,7 +35,8 @@ function Login() {
        if(user){
         localStorage.setItem("user", JSON.stringify({
           id: user._id,
-          role: "user"
+          role: "user",
+          name: user.name 
         }));
         exist = true;
       }
@@ -46,7 +47,8 @@ function Login() {
         if(owner){
           localStorage.setItem("user", JSON.stringify({
             id: owner._id,
-            role: "owner"
+            role: "owner",
+            name: owner.name 
           }));
           exist = true;
         }
@@ -57,7 +59,7 @@ function Login() {
       }
   
       
-      toast.success(`Login Successfully!${role}:${owner.name||user.name}`);
+      toast.success("Login Successfully!");
       navigate(`/airbnb`);}
       
      catch (err) {
