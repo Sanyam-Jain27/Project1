@@ -99,10 +99,10 @@ function Navbar() {
               ) : (
                 <>
                 <li className="nav-item">
-      <span className="nav-user">
-        {user.name} ({user.role})
-      </span>
-    </li>
+  <span className="user-pill">
+    {user.name} • {user.role}
+  </span>
+</li>
                 <li className="nav-item">
                   <button onClick={handleLogout} className="logout-btn">
   Logout

@@ -125,3 +125,58 @@ body {
   outline: none;
   box-shadow: none;
 }
+
+/* 🔥 UNIQUE USER DISPLAY */
+.user-pill {
+  position: relative;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+
+  /* 🎨 Premium gradient */
+  background: linear-gradient(135deg, #ff5a5f, #ff385c);
+  color: #fff;
+
+  /* ✨ Glow + depth */
+  box-shadow: 0 4px 15px rgba(255, 90, 95, 0.35),
+              inset 0 0 4px rgba(255,255,255,0.25);
+
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+/* ✨ Hover effect */
+.user-pill:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 56, 92, 0.55),
+              inset 0 0 6px rgba(255,255,255,0.35);
+}
+
+/* 🌟 Shine animation */
+.user-pill::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.6),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: 0.5s;
+}
+
+.user-pill:hover::before {
+  left: 120%;
+}
+
+/* 🎯 Text styling */
+.user-pill {
+  text-transform: capitalize;
+}
