@@ -126,57 +126,32 @@ body {
   box-shadow: none;
 }
 
-/* 🔥 UNIQUE USER DISPLAY */
+/* 🔥 SIMPLE PREMIUM BADGE */
 .user-pill {
-  position: relative;
-  padding: 8px 18px;
+  padding: 7px 16px;
   border-radius: 999px;
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 
-  /* 🎨 Premium gradient */
+  /* 🎨 Smooth gradient */
   background: linear-gradient(135deg, #ff5a5f, #ff385c);
-  color: #fff;
+  color: white;
 
-  /* ✨ Glow + depth */
-  box-shadow: 0 4px 15px rgba(255, 90, 95, 0.35),
-              inset 0 0 4px rgba(255,255,255,0.25);
+  /* ✨ Soft shadow */
+  box-shadow: 0 3px 10px rgba(255, 90, 95, 0.25);
 
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   cursor: default;
 }
 
-/* ✨ Hover effect */
+/* ✨ Subtle hover (no shine) */
 .user-pill:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(255, 56, 92, 0.55),
-              inset 0 0 6px rgba(255,255,255,0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(255, 56, 92, 0.35);
 }
 
-/* 🌟 Shine animation */
-.user-pill::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -70%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.6),
-    transparent
-  );
-  transform: skewX(-20deg);
-  transition: 0.5s;
-}
-
-.user-pill:hover::before {
-  left: 120%;
-}
-
-/* 🎯 Text styling */
+/* 🎯 Better text look */
 .user-pill {
   text-transform: capitalize;
 }
