@@ -74,35 +74,32 @@ function FullView(){
     }
    }
 
-   // 🔥 FETCH BOOKINGS (FIXED)
-   async function fetchMyBookings(){
-    console.log("Function called");
+   // 🔥 FETCH USER BOOKINGS (MULTIPLE)
+   
 
-    if(!user){
-      console.log("User not found");
-      return;
-    }
-
-    try{
-      console.log("Calling API...");
-
-      const res = await axios.get(
-        `https://project1-backend-qktj.onrender.com/booking/${id}?userId=${user._id}`
-      );
-
-      console.log("API BOOKINGS:", res.data);
-
-       
-
-      setMyBookings(bookings);
-
-    } catch(err){
-      console.log(err)
-    }
-   }
-
-   // 🔥 FETCH LISTING + REVIEWS
+   // 🔥 FETCH DATA
    useEffect(()=>{
+    async function fetchMyBookings(){
+      if(!user) return;
+  
+      try{
+        const res = await axios.get(
+          `https://project1-backend-qktj.onrender.com/booking/${id}`
+        );
+        console.log("USER:", user);
+        console.log("API BOOKINGS:", res.data);
+        const bookings = res.data.filter(
+          (b) =>
+            b.user &&
+            (b.user._id?.toString() === user._id || b.user.toString() === user._id)
+        );
+  
+        setMyBookings(bookings);
+  
+      } catch(err){
+        console.log(err)
+      }
+     }
       async function fetchData(){
          const res = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/full-view/${id}`);
          setItem(res.data)
@@ -115,15 +112,9 @@ function FullView(){
 
       fetchData()
       fetchReviews()
+      fetchMyBookings()
 
    },[id])
-
-   // 🔥 FETCH BOOKINGS WHEN USER IS READY
-   useEffect(()=>{
-      if(user){
-        fetchMyBookings()
-      }
-   }, [user, id])
 
    if(!item) return <h2>Loading...</h2>
 
@@ -142,7 +133,7 @@ function FullView(){
             <div className="card shadow-lg mb-5">
               <img src={item.img} className="card-img-top img-fluid" alt="Listing"/>
 
-              {/* 🔥 BOOKINGS DISPLAY */}
+              {/* 🔥 SHOW ALL BOOKINGS (MULTIPLE INTERVALS) */}
               {myBookings.length > 0 && (
                 <div className="alert alert-success m-3">
                   <strong>✅ Your Bookings:</strong>
@@ -180,14 +171,14 @@ function FullView(){
                 <div className="d-flex justify-content-between align-items-center">
                   <h3 className="fw-bold mb-0">{item.tittle}</h3>
 
-                  {/* USER */}
+                  {/* 🔥 USER → ALWAYS SHOW BOOK */}
                   {user?.role === "user" && (
                     <NavLink to={`/airbnb/booking/${id}`} className="book-btn">
                       Book
                     </NavLink>
                   )}
 
-                  {/* OWNER */}
+                  {/* 🔥 OWNER */}
                   {user?.role === "owner" && isOwner && (
                     <NavLink to={`/airbnb/bookingdetails/${id}`} className="book-btn">
                       Booking Details
@@ -217,7 +208,7 @@ function FullView(){
                   </li>
                 </ul>
 
-                {/* REVIEW */}
+                {/* ⭐ REVIEW */}
                 <form onSubmit={handleReviewSubmit} className="mt-4">
                   <h5>Add Review</h5>
 
