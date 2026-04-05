@@ -82,7 +82,8 @@ function FullView(){
       const res = await axios.get(
         `https://project1-backend-qktj.onrender.com/booking/${id}`
       );
-
+      console.log("USER:", user);
+      console.log("API BOOKINGS:", res.data);
       const bookings = res.data.filter(
         (b) =>
           b.user &&
