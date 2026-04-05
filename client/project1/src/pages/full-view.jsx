@@ -4,11 +4,14 @@ import axios from "axios"
 import { NavLink, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify";
 import './full-view.css'
+
 function FullView(){
 
    const { id } = useParams()
    const [item , setItem] = useState(null)
    const [reviews, setReviews] = useState([])
+   const [myBookings, setMyBookings] = useState([])
+
    const [newReview, setNewReview] = useState({
      comment: "",
      rating: 0
@@ -17,7 +20,7 @@ function FullView(){
    const navigate = useNavigate()
    const user = JSON.parse(localStorage.getItem("user"))
 
-   // 🔥 DELETE (OWNER ONLY)
+   // 🔥 DELETE
    async function handleDelete(){
     try{
        await axios.delete(`https://project1-backend-qktj.onrender.com/airbnb/delete/${id}`, {
@@ -29,7 +32,7 @@ function FullView(){
 
     } catch(err){
        console.log(err)
-       toast.success("Not allowed")
+       toast.error("Not allowed")
     }
    }
 
@@ -38,12 +41,12 @@ function FullView(){
     e.preventDefault();
 
     if(!user){
-      toast.success("Login first");
+      toast.error("Login first");
       return;
     }
 
     if(newReview.rating === 0){
-      toast.success("Please select rating");
+      toast.error("Please select rating");
       return;
     }
 
@@ -52,16 +55,14 @@ function FullView(){
         comment: newReview.comment,
         rating: newReview.rating,
         userId: user.id,
-        role: user.role   // 🔥 IMPORTANT
+        role: user.role
       });
 
       toast.success("Review added!");
 
-      // 🔥 REFRESH REVIEWS
       const res1 = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/review/${id}`);
       setReviews(res1.data);
 
-      // 🔥 REFRESH LISTING (avg rating)
       const res2 = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/full-view/${id}`);
       setItem(res2.data);
 
@@ -69,7 +70,27 @@ function FullView(){
 
     } catch(err){
       console.log(err)
-      toast.success("Error adding review");
+      toast.error("Error adding review");
+    }
+   }
+
+   // 🔥 FETCH USER BOOKINGS (MULTIPLE)
+   async function fetchMyBookings(){
+    if(!user) return;
+
+    try{
+      const res = await axios.get(
+        `https://project1-backend-qktj.onrender.com/booking/${id}`
+      );
+
+      const bookings = res.data.filter(
+        (b) => b.user && (b.user._id === user.id || b.user === user.id)
+      );
+
+      setMyBookings(bookings);
+
+    } catch(err){
+      console.log(err)
     }
    }
 
@@ -87,6 +108,7 @@ function FullView(){
 
       fetchData()
       fetchReviews()
+      fetchMyBookings()
 
    },[id])
 
@@ -98,7 +120,6 @@ function FullView(){
      item.owner &&
      (user.id === (item.owner._id || item.owner));
 
-
    return(
       <>
       <div className="container py-5">
@@ -108,8 +129,22 @@ function FullView(){
             <div className="card shadow-lg mb-5">
               <img src={item.img} className="card-img-top img-fluid" alt="Listing"/>
 
-              <div className="card-body p-4">
+              {/* 🔥 SHOW ALL BOOKINGS (MULTIPLE INTERVALS) */}
+              {myBookings.length > 0 && (
+                <div className="alert alert-success m-3">
+                  <strong>✅ Your Bookings:</strong>
+                  <ul className="mb-0 mt-2">
+                    {myBookings.map((b)=>(
+                      <li key={b._id}>
+                        {new Date(b.datein).toLocaleDateString()} →{" "}
+                        {new Date(b.dateout).toLocaleDateString()}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
+              <div className="card-body p-4">
 
                 {/* OWNER CONTROLS */}
                 {isOwner && (
@@ -129,32 +164,28 @@ function FullView(){
                   </div>
                 )}
 
-<div className="d-flex justify-content-between align-items-center">
-  <h3 className="fw-bold mb-0">{item.tittle}</h3>
+                <div className="d-flex justify-content-between align-items-center">
+                  <h3 className="fw-bold mb-0">{item.tittle}</h3>
 
-  {/* 🔥 NORMAL USER → BOOK */}
-  {user?.role === "user" && (
-    <NavLink to={`/airbnb/booking/${id}`} className="book-btn">
-      Book
-    </NavLink>
-  )}
+                  {/* 🔥 USER → ALWAYS SHOW BOOK */}
+                  {user?.role === "user" && (
+                    <NavLink to={`/airbnb/booking/${id}`} className="book-btn">
+                      Book
+                    </NavLink>
+                  )}
 
-  {/* 🔥 OWNER → ONLY IF HIS PROPERTY */}
-  {user?.role === "owner" && isOwner && (
-    <NavLink to={`/airbnb/bookingdetails/${id}`} className="book-btn">
-      Booking Details
-    </NavLink>
-  )}
+                  {/* 🔥 OWNER */}
+                  {user?.role === "owner" && isOwner && (
+                    <NavLink to={`/airbnb/bookingdetails/${id}`} className="book-btn">
+                      Booking Details
+                    </NavLink>
+                  )}
+                </div>
 
-  {/* 🔥 OWNER (OTHER PROPERTY) → NOTHING */}
-</div>
-
-                {/* OWNER NAME */}
                 <p className="text-muted">
                   <strong>Hosted by:</strong> {item.owner?.name || "Unknown"}
                 </p>
 
-                {/* AVG RATING */}
                 <p>
                   <strong>Average Rating:</strong> ⭐ {item.avgRating?.toFixed(1) || 0}
                 </p>
@@ -173,31 +204,27 @@ function FullView(){
                   </li>
                 </ul>
 
-                {/* ⭐ ADD REVIEW */}
+                {/* ⭐ REVIEW */}
                 <form onSubmit={handleReviewSubmit} className="mt-4">
                   <h5>Add Review</h5>
 
-                  {/* STAR UI */}
                   <div className="mb-3">
-                    <label>Rating:</label>
-                    <div>
-                      {[1,2,3,4,5].map((star)=>(
-                        <span
-                          key={star}
-                          style={{
-                            fontSize: "28px",
-                            cursor: "pointer",
-                            color: star <= newReview.rating ? "gold" : "lightgray"
-                          }}
-                          onClick={()=>setNewReview({
-                            ...newReview,
-                            rating: star
-                          })}
-                        >
-                          ★
-                        </span>
-                      ))}
-                    </div>
+                    {[1,2,3,4,5].map((star)=>(
+                      <span
+                        key={star}
+                        style={{
+                          fontSize: "28px",
+                          cursor: "pointer",
+                          color: star <= newReview.rating ? "gold" : "lightgray"
+                        }}
+                        onClick={()=>setNewReview({
+                          ...newReview,
+                          rating: star
+                        })}
+                      >
+                        ★
+                      </span>
+                    ))}
                   </div>
 
                   <textarea
@@ -216,7 +243,7 @@ function FullView(){
                   </button>
                 </form>
 
-                {/* SHOW REVIEWS */}
+                {/* REVIEWS */}
                 <h4 className="mt-4">Reviews</h4>
 
                 {reviews.length === 0 && <p>No reviews yet</p>}
