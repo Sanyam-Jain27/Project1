@@ -84,7 +84,9 @@ function FullView(){
       );
 
       const bookings = res.data.filter(
-        (b) => b.user && (b.user._id === user.id || b.user === user.id)
+        (b) =>
+          b.user &&
+          (b.user._id === user._id || b.user === user._id)
       );
 
       setMyBookings(bookings);
