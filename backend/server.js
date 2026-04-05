@@ -1,6 +1,7 @@
 const Card = require("./model/listing.js");
 const User = require("./model/user.js");
 const Owner = require("./model/owner.js");
+const Booking = require("./model/booking.js");
 // HERE WE CONNECT MONGOOSE -
 const mongoose = require('mongoose');
 main()
@@ -226,4 +227,71 @@ app.post("/airbnb/review/:id", async (req,res)=>{
       console.log(err);
       res.status(500).json(err.message);
     }
+  });
+
+  app.post("/booking", async (req, res) => {
+    const { username, contact, datein, dateout, listingId } = req.body;
+  
+    const booking = new Booking({
+      username,
+      contact,
+      datein,
+      dateout,
+      listingsdetails: listingId
+    });
+  
+    await booking.save();
+    res.send("Booking done");
+  });
+
+  app.get("/booking/:id", async (req, res) => {
+    const { id } = req.params;
+    const { userId } = req.query;
+  
+    const listing = await Card.findById(id);
+  
+    if (!listing || listing.owner.toString() !== userId) {
+      return res.status(403).json({ message: "Not allowed" });
+    }
+  
+    const bookings = await Booking.find({
+      listingsdetails: id
+    });
+  
+    res.json(bookings);
+  });
+
+
+  app.get("/booking/dates/:id", async (req, res) => {
+    const bookings = await Booking.find({
+      listingsdetails: req.params.id
+    });
+  
+    // 🔥 send ONLY dates (no personal info)
+    const dates = bookings.map(b => ({
+      datein: b.datein,
+      dateout: b.dateout
+    }));
+  
+    res.json(dates);
+  });
+
+  app.delete("/booking/:bookingId", async (req, res) => {
+    const { bookingId } = req.params;
+    const { userId } = req.body;
+  
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+  
+    const listing = await Card.findById(booking.listingsdetails);
+  
+    if (listing.owner.toString() !== userId) {
+      return res.status(403).json({ message: "Not allowed" });
+    }
+  
+    await Booking.findByIdAndDelete(bookingId);
+  
+    res.json({ message: "Booking cancelled" });
   });

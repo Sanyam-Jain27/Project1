@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { NavLink, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify";
+import './full-view.css'
 function FullView(){
 
    const { id } = useParams()
@@ -97,6 +98,7 @@ function FullView(){
      item.owner &&
      (user.id === (item.owner._id || item.owner));
 
+
    return(
       <>
       <div className="container py-5">
@@ -107,6 +109,7 @@ function FullView(){
               <img src={item.img} className="card-img-top img-fluid" alt="Listing"/>
 
               <div className="card-body p-4">
+
 
                 {/* OWNER CONTROLS */}
                 {isOwner && (
@@ -126,7 +129,25 @@ function FullView(){
                   </div>
                 )}
 
-                <h3 className="fw-bold mb-2">{item.tittle}</h3>
+<div className="d-flex justify-content-between align-items-center">
+  <h3 className="fw-bold mb-0">{item.tittle}</h3>
+
+  {/* 🔥 NORMAL USER → BOOK */}
+  {user?.role === "user" && (
+    <NavLink to={`/airbnb/booking/${id}`} className="book-btn">
+      Book
+    </NavLink>
+  )}
+
+  {/* 🔥 OWNER → ONLY IF HIS PROPERTY */}
+  {user?.role === "owner" && isOwner && (
+    <NavLink to={`/airbnb/bookingdetails/${id}`} className="book-btn">
+      Booking Details
+    </NavLink>
+  )}
+
+  {/* 🔥 OWNER (OTHER PROPERTY) → NOTHING */}
+</div>
 
                 {/* OWNER NAME */}
                 <p className="text-muted">

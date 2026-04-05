@@ -11,6 +11,8 @@ import Edit from "./pages/edit";
 import Footer from "./footer"
 import Login from "./pages/login"
 import SignUp from "./pages/signup"
+import Booking from "./pages/booking"
+import BookingDetails from "./pages/bookingdetails"
 import { ToastContainer } from "react-toastify";
 function App(){
     return(
@@ -25,6 +27,8 @@ function App(){
         <Route path="/airbnb/full-view/:id" element={<FullView />} />
         <Route path="/airbnb/edit/:id" element={<Edit />} />
         <Route path="/airbnb/signup" element={<SignUp />} />
+        <Route path="/airbnb/booking/:id" element={<Booking />} />
+        <Route path="/airbnb/bookingdetails/:id" element={<BookingDetails />} />
       </Routes>
       <Footer/>
     </>

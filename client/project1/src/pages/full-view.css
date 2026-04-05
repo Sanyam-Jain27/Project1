@@ -71,3 +71,32 @@
   .footer-link:hover {
     text-decoration: underline;
   }
+
+  .card-header-custom {
+    display: flex;
+    justify-content: space-between; /* pushes to corners */
+    align-items: center;
+  }
+  
+  .book-btn {
+    text-decoration: none;
+    padding: 6px 14px;
+    background-color: #ff385c;
+    color: white;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: 0.3s;
+  }
+  
+  .book-btn:hover {
+    background-color: #e03150;
+  }
+  .book-btn {
+    padding: 8px 30px;   /* top-bottom | left-right */
+    font-size: 16px;
+    background-color: #ff385c;
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+  }
