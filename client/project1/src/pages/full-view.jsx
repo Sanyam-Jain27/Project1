@@ -75,30 +75,31 @@ function FullView(){
    }
 
    // 🔥 FETCH USER BOOKINGS (MULTIPLE)
-   async function fetchMyBookings(){
-    if(!user) return;
-
-    try{
-      const res = await axios.get(
-        `https://project1-backend-qktj.onrender.com/booking/${id}`
-      );
-      console.log("USER:", user);
-      console.log("API BOOKINGS:", res.data);
-      const bookings = res.data.filter(
-        (b) =>
-          b.user &&
-          b.user._id?.toString() === user._id
-      );
-
-      setMyBookings(bookings);
-
-    } catch(err){
-      console.log(err)
-    }
-   }
+   
 
    // 🔥 FETCH DATA
    useEffect(()=>{
+    async function fetchMyBookings(){
+      if(!user) return;
+  
+      try{
+        const res = await axios.get(
+          `https://project1-backend-qktj.onrender.com/booking/${id}`
+        );
+        console.log("USER:", user);
+        console.log("API BOOKINGS:", res.data);
+        const bookings = res.data.filter(
+          (b) =>
+            b.user &&
+            (b.user._id?.toString() === user._id || b.user.toString() === user._id)
+        );
+  
+        setMyBookings(bookings);
+  
+      } catch(err){
+        console.log(err)
+      }
+     }
       async function fetchData(){
          const res = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/full-view/${id}`);
          setItem(res.data)
