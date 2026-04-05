@@ -230,18 +230,27 @@ app.post("/airbnb/review/:id", async (req,res)=>{
   });
 
   app.post("/booking", async (req, res) => {
-    const { username, contact, datein, dateout, listingId } = req.body;
+    try {
+      console.log("BODY:", req.body); // 🔥 ADD THIS
   
-    const booking = new Booking({
-      username,
-      contact,
-      datein,
-      dateout,
-      listingsdetails: listingId
-    });
+      const { username, contact, datein, dateout, listingId } = req.body;
   
-    await booking.save();
-    res.send("Booking done");
+      const booking = new Booking({
+        username,
+        contact,
+        datein,
+        dateout,
+        listingsdetails: listingId
+      });
+  
+      await booking.save();
+  
+      res.send("Booking done");
+  
+    } catch (err) {
+      console.log("ERROR:", err); // 🔥 VERY IMPORTANT
+      res.status(500).send(err.message);
+    }
   });
 
   app.get("/booking/:id", async (req, res) => {
