@@ -87,16 +87,12 @@ function FullView(){
       console.log("Calling API...");
 
       const res = await axios.get(
-        `https://project1-backend-qktj.onrender.com/booking/${id}`
+        `https://project1-backend-qktj.onrender.com/booking/${id}?userId=${user._id}`
       );
 
       console.log("API BOOKINGS:", res.data);
 
-      const bookings = res.data.filter(
-        (b) =>
-          b.user &&
-          b.user._id?.toString() === user._id.toString()
-      );
+       
 
       setMyBookings(bookings);
 

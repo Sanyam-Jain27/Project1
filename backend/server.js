@@ -243,7 +243,7 @@ app.post("/airbnb/review/:id", async (req,res)=>{
       });
   
       await booking.save();
-  
+      console.log("SAVED BOOKING:", booking); 
       res.send("Booking done");
   
     } catch (err) {
@@ -261,7 +261,8 @@ app.post("/airbnb/review/:id", async (req,res)=>{
      
   
     const bookings = await Booking.find({
-      listingsdetails: id
+      listingsdetails: id,
+      user: userId
     }).populate("user");;
   
     res.json(bookings);
