@@ -16,6 +16,7 @@ async function main() {
 // HERE WE USE EXPRESS
 const express= require('express');
 const app =express();
+app.use(express.json());
 
 // IT USES BECAUSE FRONTEND AND BACKEND BOTH RUN ON DIFFRENT PORT SO FRONTEND NOT ACCEPT BACKEND BECAUSE OF DIFFRENT PORT
 const cors = require("cors")
@@ -42,7 +43,6 @@ app.get("/airbnb/full-view/:id", async (req,res)=>{
     res.json(card);
 });
 
-app.use(express.json());
 app.post("/airbnb/airbnbyourhome", async (req,res)=>{
 
     const { role, ownerId } = req.body;
