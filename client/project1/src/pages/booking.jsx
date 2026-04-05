@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
  
 function Booking() {
   const { id } = useParams(); // 🔥 cardId
-
+  const user = JSON.parse(localStorage.getItem("user"));
   const [formData, setFormData] = useState({
     username: "",
     contact: ""
@@ -65,7 +65,8 @@ function Booking() {
           contact: formData.contact,
           datein: startDate,
           dateout: endDate,
-          listingId: id // 🔥 send card id
+          listingId: id, // 🔥 send card id
+          userId: user._id
         }
       );
 

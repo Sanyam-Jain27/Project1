@@ -24,7 +24,7 @@ function FullView(){
    async function handleDelete(){
     try{
        await axios.delete(`https://project1-backend-qktj.onrender.com/airbnb/delete/${id}`, {
-         data: { userId: user.id }
+         data: { userId: user._id }
        });
 
        toast.success("Deleted Successfully")
@@ -54,7 +54,7 @@ function FullView(){
       await axios.post(`https://project1-backend-qktj.onrender.com/airbnb/review/${id}`, {
         comment: newReview.comment,
         rating: newReview.rating,
-        userId: user.id,
+        userId: user._id,
         role: user.role
       });
 
@@ -86,7 +86,7 @@ function FullView(){
       const bookings = res.data.filter(
         (b) =>
           b.user &&
-          (b.user._id === user._id || b.user === user._id)
+          b.user._id?.toString() === user._id
       );
 
       setMyBookings(bookings);
@@ -120,7 +120,7 @@ function FullView(){
    const isOwner =
      user &&
      item.owner &&
-     (user.id === (item.owner._id || item.owner));
+     (user._id === (item.owner._id || item.owner));
 
    return(
       <>

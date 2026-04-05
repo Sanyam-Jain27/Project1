@@ -231,16 +231,15 @@ app.post("/airbnb/review/:id", async (req,res)=>{
 
   app.post("/booking", async (req, res) => {
     try {
-      console.log("BODY:", req.body); // 🔥 ADD THIS
-  
-      const { username, contact, datein, dateout, listingId } = req.body;
+      const { username, contact, datein, dateout, listingId, userId } = req.body;
   
       const booking = new Booking({
         username,
         contact,
         datein,
         dateout,
-        listingsdetails: listingId
+        listingsdetails: listingId,
+        user: userId   // 🔥 ADD THIS
       });
   
       await booking.save();
@@ -248,7 +247,7 @@ app.post("/airbnb/review/:id", async (req,res)=>{
       res.send("Booking done");
   
     } catch (err) {
-      console.log("ERROR:", err); // 🔥 VERY IMPORTANT
+      console.log(err);
       res.status(500).send(err.message);
     }
   });
@@ -259,13 +258,11 @@ app.post("/airbnb/review/:id", async (req,res)=>{
   
     const listing = await Card.findById(id);
   
-    if (!listing || listing.owner.toString() !== userId) {
-      return res.status(403).json({ message: "Not allowed" });
-    }
+     
   
     const bookings = await Booking.find({
       listingsdetails: id
-    });
+    }).populate("user");;
   
     res.json(bookings);
   });

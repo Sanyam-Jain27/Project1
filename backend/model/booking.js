@@ -14,6 +14,10 @@ const bookingSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Card"
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      },
     datein:{
         type:Date,
         required:true
