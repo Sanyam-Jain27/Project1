@@ -34,7 +34,7 @@ function Login() {
        const user = res.data.find(u => u.username === formData.username);
        if(user){
         localStorage.setItem("user", JSON.stringify({
-          id: user._id,
+          _id: user._id,
           role: "user",
           name: user.name 
         }));
@@ -46,7 +46,7 @@ function Login() {
         const owner = res.data.find(u => u.username === formData.username && u.contactno === formData.contactno);
         if(owner){
           localStorage.setItem("user", JSON.stringify({
-            id: owner._id,
+            _id: owner._id,
             role: "owner",
             name: owner.name 
           }));
