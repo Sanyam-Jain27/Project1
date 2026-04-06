@@ -146,7 +146,7 @@ function FullView(){
               <img src={item.img} className="card-img-top img-fluid" alt="Listing"/>
 
               {/* 🔥 SHOW ALL BOOKINGS (MULTIPLE INTERVALS) */}
-              {myBookings.length > 0 && (
+              {/* {myBookings.length > 0 && (
                 <div className="alert alert-success m-3">
                   <strong>✅ Your Bookings:</strong>
                   <ul className="mb-0 mt-2">
@@ -158,7 +158,7 @@ function FullView(){
                     ))}
                   </ul>
                 </div>
-              )}
+              )} */}
 
               <div className="card-body p-4">
 
