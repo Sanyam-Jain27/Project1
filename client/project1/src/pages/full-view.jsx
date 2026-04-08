@@ -128,7 +128,7 @@ function FullView(){
       fetchReviews()
       fetchMyBookings()
 
-   },[id,user?._id])
+   },[id])
 
    if(!item) return <h2>Loading...</h2>
 
