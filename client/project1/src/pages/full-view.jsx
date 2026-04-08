@@ -92,23 +92,23 @@ function FullView(){
         console.log("USER:", user);
         console.log("API BOOKINGS:", res.data);
     
-        let bookings = [];
+        // let bookings = [];
     
-        // 🔥 USER → only their bookings
-        if(user.role === "user"){
-          bookings = res.data.filter(
-            (b) =>
-              b.user &&
-              (b.user._id?.toString() === user._id || b.user.toString() === user._id)
-          );
-        }
+        // // 🔥 USER → only their bookings
+        // if(user.role === "user"){
+        //   bookings = res.data.filter(
+        //     (b) =>
+        //       b.user &&
+        //       (b.user._id?.toString() === user._id || b.user.toString() === user._id)
+        //   );
+        // }
     
-        // 🔥 OWNER → ALL bookings of this listing
-        else if(user.role === "owner"){
-          bookings = res.data; // 👈 no filter
-        }
+        // // 🔥 OWNER → ALL bookings of this listing
+        // else if(user.role === "owner"){
+        //   bookings = res.data; // 👈 no filter
+        // }
     
-        setMyBookings(bookings);
+        setMyBookings(res.data);
     
       } catch(err){
         console.log(err)
