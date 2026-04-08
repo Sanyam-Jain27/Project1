@@ -84,7 +84,9 @@ function FullView(){
     
       try{
         const res = await axios.get(
-          `https://project1-backend-qktj.onrender.com/booking/${id}`
+          `https://project1-backend-qktj.onrender.com/booking/${id}`,{ 
+            params: { userId: user._id } // This sends ?userId=YOUR_ID
+          }
         );
     
         console.log("USER:", user);
