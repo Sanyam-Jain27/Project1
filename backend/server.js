@@ -253,20 +253,27 @@ app.post("/airbnb/review/:id", async (req,res)=>{
   });
 
   app.get("/booking/:id", async (req, res) => {
-    const { id } = req.params;
-    const { userId } = req.query;
+    try {
+      const { id } = req.params;
+      const { userId } = req.query;
   
-    const listing = await Card.findById(id);
+      const listing = await Card.findById(id);
+      if (!listing) return res.status(404).send("Listing not found");
   
-     
+      let query = { listingsdetails: id };
   
-    const bookings = await Booking.find({
-      listingsdetails: id,
-      user: userId
-    }).populate("user");;
+      // 🔥 LOGIC: If the requester is NOT the owner, only show their own bookings
+      if (listing.owner.toString() !== userId) {
+        query.user = userId;
+      }
   
-    res.json(bookings);
+      const bookings = await Booking.find(query).populate("user");
+      res.json(bookings);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
   });
+  
 
 
   app.get("/booking/dates/:id", async (req, res) => {
