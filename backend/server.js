@@ -252,27 +252,32 @@ app.post("/airbnb/review/:id", async (req,res)=>{
     }
   });
 
-  app.get("/booking/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { userId } = req.query;
-  
-      const listing = await Card.findById(id);
-      if (!listing) return res.status(404).send("Listing not found");
-  
-      let query = { listingsdetails: id };
-  
-      // 🔥 LOGIC: If the requester is NOT the owner, only show their own bookings
-      if (listing.owner.toString() !== userId) {
-        query.user = userId;
-      }
-  
-      const bookings = await Booking.find(query).populate("user");
-      res.json(bookings);
-    } catch (err) {
-      res.status(500).send(err.message);
+  // Add this at the top of your backend file with other requires
+const { Types } = require("mongoose");
+
+app.get("/booking/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.query;
+
+    const listing = await Card.findById(id);
+    if (!listing) return res.status(404).send("Listing not found");
+
+    let query = { listingsdetails: id };
+
+    // 🔥 FIX: Check if userId exists and convert to ObjectId for the query
+    if (userId && listing.owner.toString() !== userId) {
+      query.user = new Types.ObjectId(userId); 
     }
-  });
+
+    const bookings = await Booking.find(query).populate("user");
+    res.json(bookings);
+  } catch (err) {
+    console.log("Error fetching bookings:", err);
+    res.status(500).send(err.message);
+  }
+});
+
   
 
 
