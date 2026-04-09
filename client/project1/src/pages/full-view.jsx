@@ -167,11 +167,11 @@ function FullView(){
                     </NavLink>
                   )}
 
-                  {user?.role === "owner" && isOwner && (
+                  {/* {user?.role === "owner" && isOwner && (
                     <NavLink to={`/airbnb/bookingdetails/${id}`} className="book-btn">
                       Booking Details
                     </NavLink>
-                  )}
+                  )} */}
                 </div>
 
                 <p className="text-muted">
