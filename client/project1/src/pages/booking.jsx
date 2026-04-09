@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { NavLink } from "react-router-dom";
  
 function Booking() {
-  const { id } = useParams(); // 🔥 cardId
+  const { id } = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
   const [formData, setFormData] = useState({
     username: "",
@@ -18,7 +18,7 @@ function Booking() {
   const [endDate, setEndDate] = useState(null);
   const [bookedDates, setBookedDates] = useState([]);
 
-  // 🔥 handle input
+ 
   function handleChange(e) {
     setFormData({
       ...formData,
@@ -26,7 +26,6 @@ function Booking() {
     });
   }
 
-  // 🔥 fetch booked dates (ONLY for this listing)
   useEffect(() => {
     axios
       .get(`https://project1-backend-qktj.onrender.com/booking/dates/${id}`)
@@ -48,7 +47,7 @@ function Booking() {
       .catch((err) => console.log(err));
   }, [id]);
 
-  // 🔥 submit booking
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -65,14 +64,13 @@ function Booking() {
           contact: formData.contact,
           datein: startDate,
           dateout: endDate,
-          listingId: id, // 🔥 send card id
+          listingId: id, 
           userId: user._id
         }
       );
 
       toast.success("Booking Successful 🎉");
 
-      // 🔥 update booked dates instantly
       let newDates = [...bookedDates];
       let start = new Date(startDate);
       let end = new Date(endDate);
@@ -84,7 +82,6 @@ function Booking() {
 
       setBookedDates(newDates);
 
-      // reset
       setFormData({ username: "", contact: "" });
       setStartDate(null);
       setEndDate(null);
@@ -104,7 +101,6 @@ function Booking() {
 
         <form onSubmit={handleSubmit}>
 
-          {/* Username */}
           <div className="mb-3">
             <label className="form-label">Username</label>
             <input
@@ -117,7 +113,6 @@ function Booking() {
             />
           </div>
 
-          {/* Contact */}
           <div className="mb-3">
             <label className="form-label">Contact</label>
             <input
@@ -130,7 +125,6 @@ function Booking() {
             />
           </div>
 
-          {/* Date Picker */}
           <div className="mb-3">
             <label className="form-label">Select Dates</label>
             <DatePicker
@@ -144,13 +138,12 @@ function Booking() {
               endDate={endDate}
               selectsRange
               minDate={new Date()}
-              excludeDates={bookedDates} // 🔥 block booked dates
+              excludeDates={bookedDates} 
               className="form-control"
               placeholderText="Select booking dates"
             />
           </div>
 
-          {/* Submit */}
           <div className="text-center">
             <button className="btn btn-primary px-4">
               Book Now

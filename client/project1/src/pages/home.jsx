@@ -1,10 +1,10 @@
-// import "./navbar.css";
+
 import { NavLink } from "react-router-dom";
 
 function Home() {
     return (
       <>
-       {/* <!-- Hero Section --> */}
+ 
 <section class="bg-light py-5 text-center">
   <div class="container">
     <h1 class="display-4 fw-bold">Welcome to Airbnb Clone</h1>
@@ -13,7 +13,6 @@ function Home() {
   </div>
 </section>
 
-{/* <!-- Features Section --> */}
 <section class="py-5">
   <div class="container">
     <h2 class="mb-4 text-center">Why choose us?</h2>
@@ -37,13 +36,11 @@ function Home() {
   </div>
 </section>
 
-{/* <!-- CTA --> */}
 <section class="bg-primary text-white py-5 text-center">
   <div class="container">
     <h2 class="fw-bold">Have a place to share?</h2>
     <p>Become a host and earn money from your space.</p>
     <NavLink to ="/airbnb/airbnb-yourhome" className="btn btn-light btn-lg">Airbnb your home</NavLink>
-    {/* <a href="/airbnb-yourhome" class="btn btn-light btn-lg">Airbnb your home</a> */}
   </div>
 </section>
 

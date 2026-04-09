@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 function Login() {
   const navigate = useNavigate();
 
-  // 🔥 role state added
   const [role, setRole] = useState("user"); 
 
   const [formData, setFormData] = useState({
@@ -74,7 +73,6 @@ function Login() {
 
         <h3 className="text-center mb-4 fw-bold">Welcome Back</h3>
 
-        {/* 🔥 SELECT ROLE */}
         <select
           className="role-select"
           value={role}

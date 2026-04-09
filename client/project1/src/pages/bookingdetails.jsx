@@ -4,19 +4,18 @@ import { useParams, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function BookingDetails() {
-  const { id } = useParams(); // 🔥 listingId
+  const { id } = useParams();
   const [bookings, setBookings] = useState([]);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // 🔥 FETCH BOOKINGS OF THIS PROPERTY
   useEffect(() => {
     async function fetchBookings() {
       try {
         const res = await axios.get(
           `https://project1-backend-qktj.onrender.com/booking/${id}`,
           {
-            params: { userId: user.id } // 🔥 REQUIRED
+            params: { userId: user.id } 
           }
         );
         setBookings(res.data);
@@ -28,21 +27,20 @@ function BookingDetails() {
     fetchBookings();
   }, [id]);
 
-  // 🔥 DELETE BOOKING
   async function handleDelete(bookingId) {
     try {
       await axios.delete(
         `https://project1-backend-qktj.onrender.com/booking/${bookingId}`,
         {
           data: {
-            userId: user.id, // 🔥 for auth
+            userId: user.id, 
           },
         }
       );
 
       toast.success("Booking Cancelled");
 
-      // 🔥 remove from UI
+    
       setBookings(bookings.filter((b) => b._id !== bookingId));
 
     } catch (err) {
@@ -83,7 +81,6 @@ function BookingDetails() {
         </div>
       </div>
 
-      {/* 🔥 BACK BUTTON */}
       <div className="text-center mt-3">
         <NavLink
           to={`/airbnb/full-view/${id}`}

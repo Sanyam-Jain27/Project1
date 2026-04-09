@@ -20,7 +20,6 @@ function FullView(){
    const navigate = useNavigate()
    const user = JSON.parse(localStorage.getItem("user"))
 
-   // 🔥 DELETE
    async function handleDelete(){
     try{
        await axios.delete(`https://project1-backend-qktj.onrender.com/airbnb/delete/${id}`, {
@@ -36,7 +35,6 @@ function FullView(){
     }
    }
 
-   // 🔥 ADD REVIEW
    async function handleReviewSubmit(e){
     e.preventDefault();
 
@@ -74,10 +72,6 @@ function FullView(){
     }
    }
 
-   // 🔥 FETCH USER BOOKINGS (MULTIPLE)
-   
-
-   // 🔥 FETCH DATA
    useEffect(()=>{
     async function fetchMyBookings(){
       if(!user) return;
@@ -91,22 +85,7 @@ function FullView(){
     
         console.log("USER:", user);
         console.log("API BOOKINGS:", res.data);
-    
-        // let bookings = [];
-    
-        // // 🔥 USER → only their bookings
-        // if(user.role === "user"){
-        //   bookings = res.data.filter(
-        //     (b) =>
-        //       b.user &&
-        //       (b.user._id?.toString() === user._id || b.user.toString() === user._id)
-        //   );
-        // }
-    
-        // // 🔥 OWNER → ALL bookings of this listing
-        // else if(user.role === "owner"){
-        //   bookings = res.data; // 👈 no filter
-        // }
+  
     
         setMyBookings(res.data);
     
@@ -132,7 +111,6 @@ function FullView(){
 
    if(!item) return <h2>Loading...</h2>
 
-   // 🔥 OWNER CHECK
    const isOwner =
      user &&
      item.owner &&
@@ -147,10 +125,9 @@ function FullView(){
             <div className="card shadow-lg mb-5">
               <img src={item.img} className="card-img-top img-fluid" alt="Listing"/>
 
-              {/* 🔥 SHOW ALL BOOKINGS (MULTIPLE INTERVALS) */}
                {myBookings.length > 0 && (
                 <div className="alert alert-success m-3">
-                  <strong>✅ Your Bookings:</strong>
+                  <strong> Your Bookings:</strong>
                   <ul className="mb-0 mt-2">
                     {myBookings.map((b)=>(
                       <li key={b._id}>
@@ -164,7 +141,6 @@ function FullView(){
 
               <div className="card-body p-4">
 
-                {/* OWNER CONTROLS */}
                 {isOwner && (
                   <div className="d-flex gap-2 mb-3">
                     <NavLink to={`/airbnb/edit/${item._id}`}>
@@ -185,14 +161,12 @@ function FullView(){
                 <div className="d-flex justify-content-between align-items-center">
                   <h3 className="fw-bold mb-0">{item.tittle}</h3>
 
-                  {/* 🔥 USER → ALWAYS SHOW BOOK */}
                   {user?.role === "user" && (
                     <NavLink to={`/airbnb/booking/${id}`} className="book-btn">
                       Book
                     </NavLink>
                   )}
 
-                  {/* 🔥 OWNER */}
                   {user?.role === "owner" && isOwner && (
                     <NavLink to={`/airbnb/bookingdetails/${id}`} className="book-btn">
                       Booking Details
@@ -222,7 +196,7 @@ function FullView(){
                   </li>
                 </ul>
 
-                {/* ⭐ REVIEW */}
+                
                 <form onSubmit={handleReviewSubmit} className="mt-4">
                   <h5>Add Review</h5>
 
@@ -261,7 +235,7 @@ function FullView(){
                   </button>
                 </form>
 
-                {/* REVIEWS */}
+              
                 <h4 className="mt-4">Reviews</h4>
 
                 {reviews.length === 0 && <p>No reviews yet</p>}

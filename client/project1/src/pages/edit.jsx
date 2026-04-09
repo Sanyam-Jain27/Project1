@@ -7,7 +7,6 @@ function Edit() {
     const { id } = useParams()
   const navigate = useNavigate();
 
-  // Step 1: Create state for form data
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -19,7 +18,6 @@ function Edit() {
 
    const [item , setItem] = useState(null) ;
 
-  // Step 2: handleChange for inputs
   function handleChange(e) {
     setFormData({
       ...formData,
@@ -27,13 +25,12 @@ function Edit() {
     });
   }
 
-  // Step 3: handleSubmit to send data to backend
   async function handleSubmit(e) {
-    e.preventDefault(); // prevent page reload
+    e.preventDefault();
     try {
       await axios.patch(`https://project1-backend-qktj.onrender.com/airbnb/edit/${id}`, formData);
       toast.success("Listing Edited successfully!");
-      navigate(`/airbnb/full-view/${id}`); // go to all listings page
+      navigate(`/airbnb/full-view/${id}`); 
     } catch (err) {
       console.log(err);
       toast.success("Something went wrong!");
@@ -61,7 +58,6 @@ function Edit() {
 
             <form onSubmit={handleSubmit}>
 
-              {/* Title */}
               <div className="mb-3">
                 <label htmlFor="title" className="form-label">Title</label>
                 <input
@@ -75,7 +71,6 @@ function Edit() {
                 />
               </div>
 
-              {/* Description */}
               <div className="mb-3">
                 <label htmlFor="description" className="form-label">Description</label>
                 <textarea
@@ -89,7 +84,7 @@ function Edit() {
                 />
               </div>
 
-              {/* Image */}
+
               <div className="mb-3">
                 <label htmlFor="image" className="form-label">Image Link</label>
                 <input
@@ -103,7 +98,7 @@ function Edit() {
                 />
               </div>
 
-              {/* Price & Country */}
+          
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <label htmlFor="price" className="form-label">Price</label>
@@ -132,7 +127,6 @@ function Edit() {
                 </div>
               </div>
 
-              {/* Location */}
               <div className="mb-3">
                 <label htmlFor="location" className="form-label">Location</label>
                 <input
@@ -146,7 +140,6 @@ function Edit() {
                 />
               </div>
 
-              {/* Submit */}
               <div className="d-grid">
                 <button type="submit" className="btn btn-danger btn-lg">Edit</button>
               </div>

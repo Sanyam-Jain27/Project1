@@ -38,7 +38,7 @@ app.get("/airbnb/full-view/:id", async (req,res)=>{
     const { id } = req.params;
 
     const card = await Card.findById(id)
-        .populate("owner");   // 🔥 IMPORTANT
+        .populate("owner");  
 
     res.json(card);
 });
@@ -65,7 +65,7 @@ app.post("/airbnb/airbnbyourhome", async (req,res)=>{
         country,
         location,
         review: [],
-        owner: ownerId   // 🔥 STORE OWNER ID
+        owner: ownerId   
     });
 
     res.json(newCard);
@@ -192,7 +192,7 @@ app.get("/airbnb/review/:id", async (req,res)=>{
     const { id } = req.params;
 
     const reviews = await Review.find({ listing: id })
-        .populate("user");   // 🔥 NOW WORKS FOR BOTH
+        .populate("user");   
 
     res.json(reviews);
 });
@@ -205,7 +205,7 @@ app.post("/airbnb/review/:id", async (req,res)=>{
         comment,
         rating: Number(rating),
         user: userId,
-        userModel: role === "owner" ? "owners" : "Users", // ✅ ADD THIS
+        userModel: role === "owner" ? "owners" : "Users",
         listing: id
       });
   
@@ -239,7 +239,7 @@ app.post("/airbnb/review/:id", async (req,res)=>{
         datein,
         dateout,
         listingsdetails: listingId,
-        user: userId   // 🔥 ADD THIS
+        user: userId   
       });
   
       await booking.save();
@@ -252,7 +252,6 @@ app.post("/airbnb/review/:id", async (req,res)=>{
     }
   });
 
-  // Add this at the top of your backend file with other requires
 const { Types } = require("mongoose");
 
 app.get("/booking/:id", async (req, res) => {
@@ -265,7 +264,6 @@ app.get("/booking/:id", async (req, res) => {
 
     let query = { listingsdetails: id };
 
-    // 🔥 FIX: Check if userId exists and convert to ObjectId for the query
     if (userId && listing.owner.toString() !== userId) {
       query.user = new Types.ObjectId(userId); 
     }
@@ -286,7 +284,6 @@ app.get("/booking/:id", async (req, res) => {
       listingsdetails: req.params.id
     });
   
-    // 🔥 send ONLY dates (no personal info)
     const dates = bookings.map(b => ({
       datein: b.datein,
       dateout: b.dateout

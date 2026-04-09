@@ -6,7 +6,7 @@ function Airbnbyourhome() {
 
   const navigate = useNavigate();
 
-  // 🔥 CHECK LOGIN + ROLE
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -22,7 +22,6 @@ function Airbnbyourhome() {
     }
   }, [navigate]);
 
-  // Step 1: Create state for form data
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -32,7 +31,6 @@ function Airbnbyourhome() {
     location: ""
   });
 
-  // Step 2: handleChange for inputs
   function handleChange(e) {
     setFormData({
       ...formData,
@@ -40,7 +38,6 @@ function Airbnbyourhome() {
     });
   }
 
-  // Step 3: handleSubmit to send data to backend
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -55,7 +52,7 @@ function Airbnbyourhome() {
       await axios.post("https://project1-backend-qktj.onrender.com/airbnb/airbnbyourhome", {
         ...formData,
         role: user.role,
-        ownerId: user.id   // 🔥🔥🔥 THIS WAS MISSING
+        ownerId: user.id   
       });
 
       toast.success("Listing added successfully!");

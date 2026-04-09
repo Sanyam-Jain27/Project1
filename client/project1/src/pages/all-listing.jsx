@@ -9,15 +9,10 @@ import { useNavigate } from "react-router-dom";
 
 function AllList(){
     const navigate = useNavigate();
-    // let {hid}=useParams();
+
     const [listings , setListings] = useState([])
      
-    // async function handleSubmit(){
-    //    const res = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/check/${hid}`);
-    //    if(res){
-    //     navigate("")
-    //    }
-    // }
+   
     useEffect(()=>{
 
         async function fetchListings(){
@@ -48,9 +43,7 @@ function AllList(){
                         
                         <div className="card h-100 border-0 shadow-sm rounded-4 overflow-hidden hover-card">
 
-                            {/* Image clickable */}
-                            
-                            {/* <NavLink to= {`/airbnb/full-view/${card._id}`}  > */}
+                    
                             <button onClick={() => {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -68,10 +61,10 @@ function AllList(){
                                     style={{height:"220px",objectFit:"cover"}}
                                 /> 
                             </button>
-                            {/* </NavLink> */}
+                         
                             
 
-                            {/* Card body */}
+                
                             <div className="card-body d-flex flex-column">
 
                                 <h5 className="card-title text-truncate fw-semibold mb-2">
@@ -81,7 +74,7 @@ function AllList(){
                                 <p className="card-text text-muted mb-2">
                                     <b>Price:</b> {card.price}/night
                                 </p>
-                                {/* <form onSubmit={handleSubmit}> */}
+                              
                                 <button
   className="btn btn-outline-danger btn-sm mt-auto rounded-pill"
   onClick={() => {
@@ -97,7 +90,7 @@ function AllList(){
 >
   View Details
 </button>
-                               {/* </form> */}
+                           
 
                             </div>
 
