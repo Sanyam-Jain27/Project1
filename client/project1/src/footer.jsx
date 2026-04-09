@@ -10,7 +10,7 @@ function Footer() {
         {/* <!-- About --> */}
         <div class="col-md-4 mb-3">
           <h5 class="text-uppercase">About us</h5>
-          <p class="text-muted">This is a demo Airbnb clone project built using Node.js, Express, MongoDB, and EJS.</p>
+          <p class="text-muted">This is Airbnb project built using Node.js, Express, MongoDB, React,Html,Css.</p>
         </div>
   
         {/* <!-- Links --> */}
