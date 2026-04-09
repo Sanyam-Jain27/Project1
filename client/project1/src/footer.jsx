@@ -27,6 +27,7 @@ function Footer() {
         <div class="col-md-4 mb-3">
           <h5 class="text-uppercase">Contact</h5>
           <p class="text-muted mb-1">Email: sanyam272727@gmail.com.com</p>
+          <p class="text-muted mb-1">Email: Dhruv@gmail.com.com</p>
           <p class="text-muted">Phone: +91-9479851113</p>
         </div>
   
