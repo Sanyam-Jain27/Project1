@@ -7,7 +7,7 @@ function Home() {
  
 <section class="bg-light py-5 text-center">
   <div class="container">
-    <h1 class="display-4 fw-bold">Welcome to Airbnb Clone</h1>
+    <h1 class="display-4 fw-bold">Welcome to Airbnb </h1>
     <p class="lead text-muted">Find unique places to stay and experience around the world.</p>
     <NavLink to="/airbnb/all-listing" className="btn btn-primary btn-lg mt-3">Explore Listings</NavLink>
   </div>
