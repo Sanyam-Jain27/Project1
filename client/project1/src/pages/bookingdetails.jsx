@@ -15,7 +15,7 @@ function BookingDetails() {
         const res = await axios.get(
           `https://project1-backend-qktj.onrender.com/booking/${id}`,
           {
-            params: { userId: user.id } 
+            params: { userId: user._id } 
           }
         );
         setBookings(res.data);
@@ -33,7 +33,7 @@ function BookingDetails() {
         `https://project1-backend-qktj.onrender.com/booking/${bookingId}`,
         {
           data: {
-            userId: user.id, 
+            userId: user._id, 
           },
         }
       );
