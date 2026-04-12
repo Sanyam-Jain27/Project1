@@ -49,16 +49,22 @@ function FullView(){
     }
 
     try{
+      console.log(user._id,user.role);
       await axios.post(`https://project1-backend-qktj.onrender.com/airbnb/review/${id}`, {
         comment: newReview.comment,
         rating: newReview.rating,
         userId: user._id,
         role: user.role
-      });
-
+      }) .then(response => {
+        console.log(response.data); // This is where your backend data lives
+      })
+      .catch(error => console.log(error));;
+      
+      console.log("hn review")
       toast.success("Review added!");
 
       const res1 = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/review/${id}`);
+      console.log(res1.data);
       setReviews(res1.data);
 
       const res2 = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/full-view/${id}`);
@@ -78,19 +84,19 @@ function FullView(){
     
       try{
         const res = await axios.get(
-          `https://project1-backend-qktj.onrender.com/booking/${id}`,{ 
-            params: { userId: user._id } // This sends ?userId=YOUR_ID
-          }
+          `https://project1-backend-qktj.onrender.com/booking/${id}`, 
+          { params: { userId: user._id } }
         );
     
-        console.log("USER:", user);
+        
         console.log("API BOOKINGS:", res.data);
-  
     
-        setMyBookings(res.data);
+        // 🔥 Ensure always array
+        setMyBookings(Array.isArray(res.data) ? res.data : []);
     
       } catch(err){
-        console.log(err)
+        console.log(err);
+        setMyBookings([]); // fallback
       }
     }
       async function fetchData(){
@@ -125,19 +131,25 @@ function FullView(){
             <div className="card shadow-lg mb-5">
               <img src={item.img} className="card-img-top img-fluid" alt="Listing"/>
 
-               {myBookings.length > 0 && (
-                <div className="alert alert-success m-3">
-                  <strong> Your Bookings:</strong>
-                  <ul className="mb-0 mt-2">
-                    {myBookings.map((b)=>(
-                      <li key={b._id}>
-                        {new Date(b.datein).toLocaleDateString()} →{" "}
-                        {new Date(b.dateout).toLocaleDateString()}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )} 
+              {user?.role === "user"&&myBookings.length === 0 ? (
+    <p className="text-muted">No bookings found</p>
+  ) : (
+    <>
+    {user?.role === "user"&&<>
+    <hr/>
+    <p className="text-muted">
+                  <strong>Your Bookings:</strong> 
+                </p></>}
+    <ul className="list-group mt-2">
+      {myBookings.map((b)=>(<>
+        <li key={b._id} className="list-group-item">
+          📅 {new Date(b.datein).toLocaleDateString()} →{" "}
+          {new Date(b.dateout).toLocaleDateString()}
+        </li></>
+      ))}
+    </ul>
+    </>
+  )}
 
               <div className="card-body p-4">
 
@@ -166,6 +178,11 @@ function FullView(){
                       Book
                     </NavLink>
                   )}
+                  {user?.role === "owner" && isOwner && (
+  <NavLink to={`/airbnb/bookingdetails/${id}`} className="book-btn">
+    View Bookings
+  </NavLink>
+)}
 
                   {/* {user?.role === "owner" && isOwner && (
                     <NavLink to={`/airbnb/bookingdetails/${id}`} className="book-btn">
@@ -242,7 +259,7 @@ function FullView(){
 
                 {reviews.map((r)=>(
                   <div key={r._id} className="border p-2 mb-2 rounded">
-                    <p><strong>{r.user?.name || "Anonymous"}</strong></p>
+                    <p><strong>{r.user.name || "Anonymous"}</strong></p>
                     <p>⭐ {r.rating}</p>
                     <p>{r.comment}</p>
                   </div>

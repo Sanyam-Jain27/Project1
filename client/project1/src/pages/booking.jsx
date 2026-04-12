@@ -4,11 +4,12 @@ import DatePicker from "react-datepicker";
 import { useParams } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate } from "react-router-dom";
  
 function Booking() {
   const { id } = useParams();
   const user = JSON.parse(localStorage.getItem("user"));
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     username: "",
     contact: ""
@@ -85,6 +86,9 @@ function Booking() {
       setFormData({ username: "", contact: "" });
       setStartDate(null);
       setEndDate(null);
+
+      navigate(`/airbnb/full-view/${id}`)
+
 
     } catch (err) {
       console.log(err);

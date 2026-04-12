@@ -15,7 +15,9 @@ function BookingDetails() {
         const res = await axios.get(
           `https://project1-backend-qktj.onrender.com/booking/${id}`,
           {
-            params: { userId: user._id } 
+            params: user?.role === "owner" 
+              ? {} 
+              : { userId: user?._id }
           }
         );
         setBookings(res.data);
@@ -23,9 +25,9 @@ function BookingDetails() {
         console.log(err);
       }
     }
-
-    fetchBookings();
-  }, [id]);
+  
+    if(user) fetchBookings();
+  }, [id,user]);
 
   async function handleDelete(bookingId) {
     try {

@@ -34,20 +34,24 @@ function SignUp() {
           ? "https://project1-backend-qktj.onrender.com/airbnb/signup/owner"
           : "https://project1-backend-qktj.onrender.com/airbnb/signup/user";
           let exist=false;
-      if(role==="user"){
-       let res = await axios.get("https://project1-backend-qktj.onrender.com/airbnb/signup/user");
-       const user = res.data.find(u => u.username === formData.username);
-       if(user){
-        exist=true;
-       }
-      }
-      if(role==="owner"){
-        let res = await axios.get("https://project1-backend-qktj.onrender.com/airbnb/signup/owner");
-        const owner = res.data.find(u => u.username === formData.username && u.contactno === formData.contactno);
-        if(owner){
-            exist =true;
-        }
-       }
+          if(role==="user"){
+            let res = await axios.get("https://project1-backend-qktj.onrender.com/airbnb/login/user");
+            const user = res.data.find(u => u.username === formData.username);
+            if(user){
+              exist = true;
+            }
+          }
+          
+          if(role==="owner"){
+            let res = await axios.get("https://project1-backend-qktj.onrender.com/airbnb/login/owner");
+            const owner = res.data.find(u => 
+              u.username === formData.username && 
+              u.contactno === formData.contactno
+            );
+            if(owner){
+              exist = true;
+            }
+          }
       if(exist){
         toast.success("already exist");
         return;

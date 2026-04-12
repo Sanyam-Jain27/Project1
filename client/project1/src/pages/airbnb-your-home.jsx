@@ -52,7 +52,7 @@ function Airbnbyourhome() {
       await axios.post("https://project1-backend-qktj.onrender.com/airbnb/airbnbyourhome", {
         ...formData,
         role: user.role,
-        ownerId: user.id   
+        ownerId: user._id   
       });
 
       toast.success("Listing added successfully!");
