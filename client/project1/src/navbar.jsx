@@ -77,7 +77,7 @@ function Navbar() {
                     navigate("/airbnb/airbnb-yourhome");
                   }}
                 >
-                  Airbnb your Home
+                  Add Your Place
                 </NavLink>
               </li>
 
@@ -159,7 +159,7 @@ function Navbar() {
                   navigate("/airbnb/airbnb-yourhome");
                 }}
               >
-                Airbnb your home
+                Add Your Place
               </NavLink>
             </li>
 
