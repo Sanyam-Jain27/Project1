@@ -10,7 +10,7 @@ function Footer() {
         {/* <!-- About --> */}
         <div class="col-md-4 mb-3">
           <h5 class="text-uppercase">About us</h5>
-          <p class="text-muted">This is StayFinder project built using Node.js, Express, MongoDB, React,Html,Css.</p>
+          <p class="text-muted">This is SportFinder project built using Node.js, Express, MongoDB, React,Html,Css.</p>
         </div>
   
         {/* <!-- Links --> */}
@@ -19,7 +19,7 @@ function Footer() {
           <ul class="list-unstyled">
             <li><NavLink to="/airbnb" className="nav-link" end>Home</NavLink></li>
             <li><NavLink to="/airbnb/all-listing" className="nav-link">All Listings</NavLink></li>
-            <li><NavLink to="/airbnb/airbnb-yourhome" className="nav-link">Airbnb your Home</NavLink></li>
+            <li><NavLink to="/airbnb/airbnb-yourhome" className="nav-link">List Your Venue</NavLink></li>
           </ul>
         </div>
   
@@ -27,7 +27,6 @@ function Footer() {
         <div class="col-md-4 mb-3">
           <h5 class="text-uppercase">Contact</h5>
           <p class="text-muted mb-1">Email: sanyam272727@gmail.com.com</p>
-          <p class="text-muted mb-1">Email: Dhruv@gmail.com.com</p>
           <p class="text-muted">Phone: +91-9479851113</p>
         </div>
   

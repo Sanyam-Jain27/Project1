@@ -72,7 +72,7 @@ function AllList(){
                                 </h5>
 
                                 <p className="card-text text-muted mb-2">
-                                    <b>Price:</b> {card.price}/night
+                                    <b>Price:</b> {card.price}/slot
                                 </p>
                               
                                 <button

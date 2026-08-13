@@ -26,7 +26,7 @@ function Navbar() {
               className="brand-logo"
               alt="Logo"
             />
-            <span className="fw-bold fs-5 text-dark brand-text">Stay Finder </span>
+            <span className="fw-bold fs-5 text-dark brand-text">SportFinder </span>
           </NavLink>
 
           {/* Mobile Toggler */}

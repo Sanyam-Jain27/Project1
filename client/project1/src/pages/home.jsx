@@ -1,52 +1,285 @@
-
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-    return (
-      <>
- 
-<section class="bg-light py-5 text-center">
-  <div class="container">
-    <h1 class="display-4 fw-bold">Welcome to StayFinder </h1>
-    <p class="lead text-muted">Find unique places to stay and experience around the world.</p>
-    <NavLink to="/airbnb/all-listing" className="btn btn-primary btn-lg mt-3">Explore Listings</NavLink>
-  </div>
-</section>
+  const [listings, setListings] = useState([]);
+const navigate = useNavigate();
 
-<section class="py-5">
-  <div class="container">
-    <h2 class="mb-4 text-center">Why choose us?</h2>
-    <div class="row text-center">
-      <div class="col-md-4">
-        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" width="64" alt="Icon"/>
-        <h5 class="mt-3">Unique Stays</h5>
-        <p>Choose from cabins, apartments, castles, and more.</p>
+useEffect(() => {
+  async function fetchListings() {
+    try {
+      const res = await axios.get(
+        "https://project1-backend-qktj.onrender.com/airbnb/all-listing"
+      );
+
+      // Sort by rating - highest first
+      const topRated = res.data
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 3);
+
+      setListings(topRated);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  fetchListings();
+}, []);
+  return (
+    <>
+      {/* Hero Section */}
+      <section className="bg-light py-5">
+        <div className="container py-5">
+          <div className="row align-items-center">
+            <div className="col-lg-7 text-center text-lg-start">
+              <h1 className="display-4 fw-bold">
+                Find the Perfect Place to <span className="text-primary">Play</span>
+              </h1>
+
+              <p className="lead text-muted mt-3">
+                Discover the best turfs, badminton courts, football grounds,
+                cricket pitches and more near you.
+              </p>
+
+              <div className="d-flex gap-3 justify-content-center justify-content-lg-start mt-4">
+                <NavLink
+                  to="/airbnb/all-listing"
+                  className="btn btn-primary btn-lg"
+                >
+                  Find a Venue
+                </NavLink>
+
+                <NavLink
+                  to="/airbnb/airbnb-yourhome"
+                  className="btn btn-outline-dark btn-lg"
+                >
+                  List Your Venue
+                </NavLink>
+              </div>
+            </div>
+
+            <div className="col-lg-5 mt-5 mt-lg-0 text-center">
+              <img
+                src="https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=800&q=80"
+                className="img-fluid rounded-4 shadow"
+                alt="People playing sports"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Search Section */}
+      
+
+      {/* Sports Categories */}
+      <section className="py-5">
+        <div className="container">
+          <h2 className="fw-bold text-center">Play Your Favourite Sport</h2>
+
+          <p className="text-center text-muted mb-5">
+            Find the best sports venues around you
+          </p>
+
+          <div className="row g-4">
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="card border-0 shadow-sm text-center p-3 h-100">
+                <div className="fs-1">⚽</div>
+                <h6 className="mt-2">Football</h6>
+              </div>
+            </div>
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="card border-0 shadow-sm text-center p-3 h-100">
+                <div className="fs-1">🏏</div>
+                <h6 className="mt-2">Cricket</h6>
+              </div>
+            </div>
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="card border-0 shadow-sm text-center p-3 h-100">
+                <div className="fs-1">🏸</div>
+                <h6 className="mt-2">Badminton</h6>
+              </div>
+            </div>
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="card border-0 shadow-sm text-center p-3 h-100">
+                <div className="fs-1">🏀</div>
+                <h6 className="mt-2">Basketball</h6>
+              </div>
+            </div>
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="card border-0 shadow-sm text-center p-3 h-100">
+                <div className="fs-1">🎾</div>
+                <h6 className="mt-2">Tennis</h6>
+              </div>
+            </div>
+
+            <div className="col-6 col-md-4 col-lg-2">
+              <div className="card border-0 shadow-sm text-center p-3 h-100">
+                <div className="fs-1">🏓</div>
+                <h6 className="mt-2">Table Tennis</h6>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Why SportFinder */}
+      <section className="bg-light py-5">
+        <div className="container">
+          <h2 className="fw-bold text-center mb-5">
+            Why Choose SportFinder?
+          </h2>
+
+          <div className="row text-center g-4">
+
+            <div className="col-md-4">
+              <div className="card border-0 bg-transparent">
+                <div className="fs-1">📍</div>
+                <h5 className="mt-3">Find Nearby Venues</h5>
+                <p className="text-muted">
+                  Discover sports venues close to your location and spend
+                  less time searching.
+                </p>
+              </div>
+            </div>
+
+            <div className="col-md-4">
+              <div className="card border-0 bg-transparent">
+                <div className="fs-1">⭐</div>
+                <h5 className="mt-3">Trusted Reviews</h5>
+                <p className="text-muted">
+                  Compare ratings and reviews before choosing the perfect
+                  place to play.
+                </p>
+              </div>
+            </div>
+
+            <div className="col-md-4">
+              <div className="card border-0 bg-transparent">
+                <div className="fs-1">📅</div>
+                <h5 className="mt-3">Easy Booking</h5>
+                <p className="text-muted">
+                  Check availability and book your preferred time slot
+                  quickly and easily.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* Popular Venues */}
+<section className="py-5">
+  <div className="container">
+
+    <div className="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 className="fw-bold mb-1">Top Rated Venues</h2>
+        <p className="text-muted mb-0">
+          The highest-rated places players love
+        </p>
       </div>
-      <div class="col-md-4">
-        <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" width="64" alt="Icon"/>
-        <h5 class="mt-3">Trusted Hosts</h5>
-        <p>Stay with verified, top-rated hosts for a great experience.</p>
-      </div>
-      <div class="col-md-4">
-        <img src="https://cdn-icons-png.flaticon.com/512/3076/3076129.png" width="64" alt="Icon"/>
-        <h5 class="mt-3">Great Locations</h5>
-        <p>Find homes close to popular destinations and cities.</p>
-      </div>
+
+      <NavLink
+        to="/airbnb/all-listing"
+        className="btn btn-outline-primary"
+      >
+        View All
+      </NavLink>
+    </div>
+
+    <div className="row g-4">
+
+      {listings.map((card) => (
+        <div className="col-12 col-md-4" key={card._id}>
+
+          <div className="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+
+            <button
+              onClick={() => {
+                const user = JSON.parse(localStorage.getItem("user"));
+
+                if (!user) {
+                  alert("Login first");
+                  return;
+                }
+
+                navigate(`/airbnb/full-view/${card._id}`);
+              }}
+              className="p-0 border-0 bg-transparent w-100"
+            >
+              <img
+                src={card.img}
+                className="card-img-top"
+                alt={card.tittle}
+                style={{
+                  height: "220px",
+                  objectFit: "cover"
+                }}
+              />
+            </button>
+
+            <div className="card-body d-flex flex-column">
+
+              <h5 className="card-title fw-semibold mb-2">
+                {card.tittle}
+              </h5>
+
+              <p className="text-muted mb-2">
+                📍 {card.location}
+              </p>
+
+              <p className="mb-2">
+                <b>₹{card.price}</b> / slot
+              </p>
+
+              <p className="mb-0">
+                ⭐ <strong>{card.rating}</strong>
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+      ))}
+
     </div>
   </div>
 </section>
 
-<section class="bg-primary text-white py-5 text-center">
-  <div class="container">
-    <h2 class="fw-bold">Have a place to share?</h2>
-    <p>Become a host and earn money from your space.</p>
-    <NavLink to ="/airbnb/airbnb-yourhome" className="btn btn-light btn-lg">Add Your Place</NavLink>
-  </div>
-</section>
+      {/* CTA */}
+      <section className="bg-primary text-white py-5 text-center">
+        <div className="container">
 
-      </>
-    );
-  }
-  
-  export default Home;
-  
+          <h2 className="fw-bold">
+            Own a Sports Venue?
+          </h2>
+
+          <p className="lead">
+            List your turf, court or ground and reach more players.
+          </p>
+
+          <NavLink
+            to="/airbnb/airbnb-yourhome"
+            className="btn btn-light btn-lg mt-2"
+          >
+            List Your Venue
+          </NavLink>
+
+        </div>
+      </section>
+    </>
+  );
+}
+
+export default Home;
