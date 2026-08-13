@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-function Airbnbyourhome() {
+function ListYourVenue() {
 
   const navigate = useNavigate();
 
@@ -49,7 +49,7 @@ function Airbnbyourhome() {
         return;
       }
 
-      await axios.post("https://project1-backend-qktj.onrender.com/airbnb/airbnbyourhome", {
+      await axios.post("https://project1-backend-qktj.onrender.com/airbnb/list-your-venue", {
         ...formData,
         role: user.role,
         ownerId: user._id   
@@ -161,4 +161,4 @@ function Airbnbyourhome() {
   );
 }
 
-export default Airbnbyourhome;
+export default ListYourVenue;

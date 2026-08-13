@@ -52,7 +52,7 @@ useEffect(() => {
                 </NavLink>
 
                 <NavLink
-                  to="/airbnb/airbnb-yourhome"
+                  to="/airbnb/list-your-home"
                   className="btn btn-outline-dark btn-lg"
                 >
                   List Your Venue
@@ -270,7 +270,7 @@ useEffect(() => {
           </p>
 
           <NavLink
-            to="/airbnb/airbnb-yourhome"
+            to="/airbnb/list-your-home"
             className="btn btn-light btn-lg mt-2"
           >
             List Your Venue

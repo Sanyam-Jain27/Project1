@@ -5,7 +5,7 @@ import Navbar from "./navbar"
 import Home from "./pages/home"
 import { Routes, Route } from "react-router-dom";
 import AllList from "./pages/all-listing"; 
-import Airbnbyourhome from "./pages/airbnb-your-home";
+import ListYourVenue from "./pages/list-your-venue";
 import FullView from "./pages/full-view";
 import Edit from "./pages/edit";
 import Footer from "./footer"
@@ -21,7 +21,7 @@ function App(){
     <Navbar/>
     <Routes>
         <Route path="/airbnb/all-listing" element={<AllList />} />
-        <Route path="/airbnb/airbnb-yourhome" element={<Airbnbyourhome />} />
+        <Route path="/airbnb/list-your-venue" element={<ListYourVenue />} />
         <Route path="/airbnb" element={<Home />} />
         <Route path="/airbnb/login" element={<Login />} />
         <Route path="/airbnb/full-view/:id" element={<FullView />} />

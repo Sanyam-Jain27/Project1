@@ -19,7 +19,7 @@ function Footer() {
           <ul class="list-unstyled">
             <li><NavLink to="/airbnb" className="nav-link" end>Home</NavLink></li>
             <li><NavLink to="/airbnb/all-listing" className="nav-link">All Listings</NavLink></li>
-            <li><NavLink to="/airbnb/airbnb-yourhome" className="nav-link">List Your Venue</NavLink></li>
+            <li><NavLink to="/airbnb/list-your-home" className="nav-link">List Your Venue</NavLink></li>
           </ul>
         </div>
   

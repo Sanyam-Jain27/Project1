@@ -74,7 +74,7 @@ function Navbar() {
                       return;
                     }
 
-                    navigate("/airbnb/airbnb-yourhome");
+                    navigate("/airbnb/list-your-venue");
                   }}
                 >
                   Add Your Place
@@ -156,7 +156,7 @@ function Navbar() {
                     return;
                   }
 
-                  navigate("/airbnb/airbnb-yourhome");
+                  navigate("/airbnb/list-your-venue");
                 }}
               >
                 Add Your Place
