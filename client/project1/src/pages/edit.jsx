@@ -1,8 +1,9 @@
 import { useState,useEffect } from "react";
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import { toast } from "react-toastify";
+
 function Edit() {
     const { id } = useParams()
   const navigate = useNavigate();
@@ -28,20 +29,24 @@ function Edit() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await axios.patch(`https://project1-backend-qktj.onrender.com/airbnb/edit/${id}`, formData);
+      await api.patch(`/airbnb/edit/${id}`, formData);
       toast.success("Listing Edited successfully!");
       navigate(`/airbnb/full-view/${id}`); 
     } catch (err) {
       console.log(err);
-      toast.success("Something went wrong!");
+      toast.error(err.response?.data?.message || "Something went wrong!");
     }
   }
 
   useEffect(()=>{
 
     async function fetchData(){
-       const res = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/full-view/${id}`);
-       setItem(res.data)
+       try {
+         const res = await api.get(`/airbnb/full-view/${id}`);
+         setItem(res.data);
+       } catch(err) {
+         console.log(err);
+       }
     }
 
     fetchData()

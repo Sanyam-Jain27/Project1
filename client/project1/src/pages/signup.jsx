@@ -1,17 +1,17 @@
 import './login.css';
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
+import api from "../api";
+
 function SignUp() {
   const navigate = useNavigate();
 
-  const [role, setRole] = useState("user"); 
+  const [role, setRole] = useState("user");
 
   const [formData, setFormData] = useState({
-    age: "",
     name: "",
+    age: "",
     username: "",
     password: "",
     contactno: "",
@@ -27,46 +27,41 @@ function SignUp() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-  
-    try { 
-      const url =
+
+    try {
+      const endpoint =
         role === "owner"
-          ? "https://project1-backend-qktj.onrender.com/airbnb/signup/owner"
-          : "https://project1-backend-qktj.onrender.com/airbnb/signup/user";
-          let exist=false;
-          if(role==="user"){
-            let res = await axios.get("https://project1-backend-qktj.onrender.com/airbnb/login/user");
-            const user = res.data.find(u => u.username === formData.username);
-            if(user){
-              exist = true;
-            }
-          }
-          
-          if(role==="owner"){
-            let res = await axios.get("https://project1-backend-qktj.onrender.com/airbnb/login/owner");
-            const owner = res.data.find(u => 
-              u.username === formData.username && 
-              u.contactno === formData.contactno
-            );
-            if(owner){
-              exist = true;
-            }
-          }
-      if(exist){
-        toast.success("already exist");
-        return;
-      }
-  
-      await axios.post(url, {
-        ...formData,
-        role
-      });
+          ? "/airbnb/signup/owner"
+          : "/airbnb/signup/user";
+
+      const payload = role === "owner"
+        ? formData
+        : {
+            name: formData.name,
+            age: formData.age,
+            username: formData.username,
+            password: formData.password
+          };
+
+      const res = await api.post(endpoint, payload);
+
+      // Save JWT returned by the backend
+      localStorage.setItem("token", res.data.token);
+
+      // Save logged-in user information
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
       toast.success("SignUp Successfully!");
-      navigate(`/airbnb`);}
-      
-     catch (err) {
-      console.log(err);
-      toast.success("Something went wrong!");
+      navigate("/airbnb");
+
+    } catch (err) {
+      console.error("Signup error:", err);
+
+      const message =
+        err.response?.data?.message ||
+        "Signup failed. Please try again.";
+
+      toast.error(message);
     }
   }
 
@@ -93,6 +88,7 @@ function SignUp() {
               type="text"
               className="form-control"
               name="name"
+              value={formData.name}
               onChange={handleChange}
               required
             />
@@ -104,6 +100,7 @@ function SignUp() {
               type="text"
               className="form-control"
               name="age"
+              value={formData.age}
               onChange={handleChange}
               required
             />
@@ -115,6 +112,7 @@ function SignUp() {
               type="text"
               className="form-control"
               name="username"
+              value={formData.username}
               onChange={handleChange}
               required
             />
@@ -126,12 +124,13 @@ function SignUp() {
               type="password"
               className="form-control"
               name="password"
+              value={formData.password}
               onChange={handleChange}
               required
             />
           </div>
 
-          {/* 🔥 EXTRA FIELDS FOR OWNER ONLY */}
+          {/* EXTRA FIELDS FOR OWNER ONLY */}
           {role === "owner" && (
             <>
               <div className="mb-3">
@@ -140,6 +139,7 @@ function SignUp() {
                   type="text"
                   className="form-control"
                   name="contactno"
+                  value={formData.contactno}
                   onChange={handleChange}
                   required
                 />
@@ -148,9 +148,10 @@ function SignUp() {
               <div className="mb-3">
                 <label className="form-label fw-semibold">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   className="form-control"
                   name="email"
+                  value={formData.email}
                   onChange={handleChange}
                   required
                 />
@@ -165,7 +166,7 @@ function SignUp() {
 
         <p className="text-center mt-3">
           Have an account?
-          <NavLink to={`/airbnb/login`}> Login </NavLink>
+          <NavLink to="/airbnb/login"> Login </NavLink>
         </p>
 
       </div>

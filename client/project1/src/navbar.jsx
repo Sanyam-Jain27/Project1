@@ -8,6 +8,7 @@ function Navbar() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   function handleLogout() {
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
     alert("Logged out successfully");
     navigate("/airbnb");

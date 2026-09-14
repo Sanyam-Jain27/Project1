@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 import { toast } from "react-toastify";
+
 function ListYourVenue() {
 
   const navigate = useNavigate();
@@ -11,13 +12,13 @@ function ListYourVenue() {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (!user) {
-      toast.success("Login first");
+      toast.error("Login first");
       navigate("/airbnb/login");
       return;
     }
 
     if (user.role !== "owner") {
-      toast.success("Only owners can access this page");
+      toast.error("Only owners can access this page");
       navigate("/airbnb");
     }
   }, [navigate]);
@@ -45,22 +46,19 @@ function ListYourVenue() {
       const user = JSON.parse(localStorage.getItem("user"));
 
       if (!user) {
-        toast.success("Login first");
+        toast.error("Login first");
+        navigate("/airbnb/login");
         return;
       }
 
-      await axios.post("https://project1-backend-qktj.onrender.com/airbnb/list-your-venue", {
-        ...formData,
-        role: user.role,
-        ownerId: user._id   
-      });
+      await api.post("/airbnb/list-your-venue", formData);
 
       toast.success("Listing added successfully!");
       navigate("/airbnb/all-listing");
 
     } catch (err) {
       console.log(err);
-      toast.success("Something went wrong!");
+      toast.error(err.response?.data?.message || "Something went wrong!");
     }
   }
 

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import axios from "axios"
+import api from "../api"
 import { NavLink, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify";
 import './full-view.css'
@@ -22,16 +22,14 @@ function FullView(){
 
    async function handleDelete(){
     try{
-       await axios.delete(`https://project1-backend-qktj.onrender.com/airbnb/delete/${id}`, {
-         data: { userId: user._id }
-       });
+       await api.delete(`/airbnb/delete/${id}`);
 
        toast.success("Deleted Successfully")
        navigate("/airbnb/all-listing")
 
     } catch(err){
        console.log(err)
-       toast.error("Not allowed")
+       toast.error(err.response?.data?.message || "Not allowed")
     }
    }
 
@@ -49,32 +47,24 @@ function FullView(){
     }
 
     try{
-      console.log(user._id,user.role);
-      await axios.post(`https://project1-backend-qktj.onrender.com/airbnb/review/${id}`, {
+      await api.post(`/airbnb/review/${id}`, {
         comment: newReview.comment,
-        rating: newReview.rating,
-        userId: user._id,
-        role: user.role
-      }) .then(response => {
-        console.log(response.data); // This is where your backend data lives
-      })
-      .catch(error => console.log(error));;
+        rating: newReview.rating
+      });
       
-      console.log("hn review")
       toast.success("Review added!");
 
-      const res1 = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/review/${id}`);
-      console.log(res1.data);
+      const res1 = await api.get(`/airbnb/review/${id}`);
       setReviews(res1.data);
 
-      const res2 = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/full-view/${id}`);
+      const res2 = await api.get(`/airbnb/full-view/${id}`);
       setItem(res2.data);
 
       setNewReview({ comment: "", rating: 0 });
 
     } catch(err){
       console.log(err)
-      toast.error("Error adding review");
+      toast.error(err.response?.data?.message || "Error adding review");
     }
    }
 
@@ -83,15 +73,12 @@ function FullView(){
       if(!user) return;
     
       try{
-        const res = await axios.get(
-          `https://project1-backend-qktj.onrender.com/booking/${id}`, 
+        const res = await api.get(
+          `/booking/${id}`, 
           { params: { userId: user._id } }
         );
     
-        
-        console.log("API BOOKINGS:", res.data);
-    
-        // 🔥 Ensure always array
+        // Ensure always array
         setMyBookings(Array.isArray(res.data) ? res.data : []);
     
       } catch(err){
@@ -100,13 +87,21 @@ function FullView(){
       }
     }
       async function fetchData(){
-         const res = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/full-view/${id}`);
-         setItem(res.data)
+         try {
+           const res = await api.get(`/airbnb/full-view/${id}`);
+           setItem(res.data);
+         } catch(err) {
+           console.log(err);
+         }
       }
 
       async function fetchReviews(){
-         const res = await axios.get(`https://project1-backend-qktj.onrender.com/airbnb/review/${id}`);
-         setReviews(res.data)
+         try {
+           const res = await api.get(`/airbnb/review/${id}`);
+           setReviews(res.data);
+         } catch(err) {
+           console.log(err);
+         }
       }
 
       fetchData()

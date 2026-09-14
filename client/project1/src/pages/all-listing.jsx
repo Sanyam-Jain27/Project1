@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
+import api from "../api"
 import './all-listing.css'
 import { NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom"
@@ -17,7 +17,7 @@ function AllList(){
 
         async function fetchListings(){
             try{
-                const res = await axios.get("https://project1-backend-qktj.onrender.com/airbnb/all-listing")
+                const res = await api.get("/airbnb/all-listing")
                 setListings(res.data)
             }
             catch(err){

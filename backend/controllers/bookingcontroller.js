@@ -5,7 +5,7 @@ const { Types } = require("mongoose");
 // CREATE booking
 exports.createBooking = async (req, res) => {
     try {
-        const { username, contact, datein, dateout, listingId, userId } = req.body;
+        const { username, contact, datein, dateout, listingId } = req.body;
 
         const booking = new Booking({
             username,
@@ -13,12 +13,12 @@ exports.createBooking = async (req, res) => {
             datein,
             dateout,
             listingsdetails: listingId,
-            user: userId
+            user: req.user.id
         });
 
         await booking.save();
 
-        res.send("Booking done");
+        res.status(201).send("Booking done");
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -35,7 +35,7 @@ exports.getBookings = async (req, res) => {
 
         let query = { listingsdetails: id };
 
-        // 🔥 Always filter by user if provided
+        // Always filter by user if provided
         if (userId) {
             query.user = userId;
         }
@@ -50,35 +50,45 @@ exports.getBookings = async (req, res) => {
 
 // GET booked dates
 exports.getBookedDates = async (req, res) => {
-    const bookings = await Booking.find({
-        listingsdetails: req.params.id
-    });
+    try {
+        const bookings = await Booking.find({
+            listingsdetails: req.params.id
+        });
 
-    const dates = bookings.map(b => ({
-        datein: b.datein,
-        dateout: b.dateout
-    }));
+        const dates = bookings.map(b => ({
+            datein: b.datein,
+            dateout: b.dateout
+        }));
 
-    res.json(dates);
+        res.json(dates);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
 };
 
 // DELETE booking
 exports.deleteBooking = async (req, res) => {
-    const { bookingId } = req.params;
-    const { userId } = req.body;
+    try {
+        const { bookingId } = req.params;
 
-    const booking = await Booking.findById(bookingId);
-    if (!booking) {
-        return res.status(404).json({ message: "Booking not found" });
+        const booking = await Booking.findById(bookingId);
+        if (!booking) {
+            return res.status(404).json({ message: "Booking not found" });
+        }
+
+        const listing = await Card.findById(booking.listingsdetails);
+
+        const isBookingUser = booking.user && booking.user.toString() === req.user.id;
+        const isListingOwner = listing && listing.owner && listing.owner.toString() === req.user.id;
+
+        if (!isBookingUser && !isListingOwner) {
+            return res.status(403).json({ message: "Not allowed" });
+        }
+
+        await Booking.findByIdAndDelete(bookingId);
+
+        res.json({ message: "Booking cancelled" });
+    } catch (err) {
+        res.status(500).json({ message: "Error deleting booking", error: err.message });
     }
-
-    const listing = await Card.findById(booking.listingsdetails);
-
-    if (listing.owner.toString() !== userId) {
-        return res.status(403).json({ message: "Not allowed" });
-    }
-
-    await Booking.findByIdAndDelete(bookingId);
-
-    res.json({ message: "Booking cancelled" });
 };

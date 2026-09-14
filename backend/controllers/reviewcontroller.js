@@ -3,29 +3,36 @@ const Card = require("../model/listing");
 
 // GET reviews
 exports.getReviews = async (req, res) => {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const reviews = await Review.find({ listing: id })
-        .populate("user");
+        const reviews = await Review.find({ listing: id })
+            .populate("user");
 
-    res.json(reviews);
+        res.json(reviews);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching reviews", error: err.message });
+    }
 };
 
 // CREATE review
 exports.createReview = async (req, res) => {
     try {
         const { id } = req.params;
-        const { comment, rating, userId, role } = req.body;
-        console.log(userId)
+        const { comment, rating } = req.body;
+
+        const listing = await Card.findById(id);
+        if (!listing) {
+            return res.status(404).json({ message: "Listing not found" });
+        }
+
         const review = await Review.create({
             comment,
             rating: Number(rating),
-            user: userId,
-            userModel: role === "owner" ? "owners" : "Users",
+            user: req.user.id,
+            userModel: req.user.role === "owner" ? "owners" : "Users",
             listing: id
         });
-
-        const listing = await Card.findById(id);
 
         // add review
         listing.review.push(review._id);
@@ -40,8 +47,8 @@ exports.createReview = async (req, res) => {
 
         await listing.save();
 
-        res.json(review);
+        res.status(201).json(review);
     } catch (err) {
-        res.status(500).json(err.message);
+        res.status(500).json({ message: "Error creating review", error: err.message });
     }
 };

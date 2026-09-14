@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api";
 import DatePicker from "react-datepicker";
 import { useParams } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
-import { NavLink,useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
  
 function Booking() {
   const { id } = useParams();
@@ -28,8 +28,8 @@ function Booking() {
   }
 
   useEffect(() => {
-    axios
-      .get(`https://project1-backend-qktj.onrender.com/booking/dates/${id}`)
+    api
+      .get(`/booking/dates/${id}`)
       .then((res) => {
         const dates = [];
 
@@ -52,23 +52,25 @@ function Booking() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (!user) {
+      toast.error("Login first");
+      navigate("/airbnb/login");
+      return;
+    }
+
     if (!startDate || !endDate) {
       toast.error("Select dates");
       return;
     }
 
     try {
-      await axios.post(
-        `https://project1-backend-qktj.onrender.com/booking`,
-        {
-          username: formData.username,
-          contact: formData.contact,
-          datein: startDate,
-          dateout: endDate,
-          listingId: id, 
-          userId: user._id
-        }
-      );
+      await api.post("/booking", {
+        username: formData.username,
+        contact: formData.contact,
+        datein: startDate,
+        dateout: endDate,
+        listingId: id
+      });
 
       toast.success("Booking Successful 🎉");
 
@@ -87,12 +89,11 @@ function Booking() {
       setStartDate(null);
       setEndDate(null);
 
-      navigate(`/airbnb/full-view/${id}`)
-
+      navigate(`/airbnb/full-view/${id}`);
 
     } catch (err) {
       console.log(err);
-      toast.error("Booking Failed");
+      toast.error(err.response?.data?.message || "Booking Failed");
     }
   }
 

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -10,9 +10,7 @@ const navigate = useNavigate();
 useEffect(() => {
   async function fetchListings() {
     try {
-      const res = await axios.get(
-        "https://project1-backend-qktj.onrender.com/airbnb/all-listing"
-      );
+      const res = await api.get("/airbnb/all-listing");
 
       // Sort by rating - highest first
       const topRated = res.data

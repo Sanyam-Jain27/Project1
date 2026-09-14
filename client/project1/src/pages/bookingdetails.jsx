@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api";
 import { useParams, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -12,8 +12,8 @@ function BookingDetails() {
   useEffect(() => {
     async function fetchBookings() {
       try {
-        const res = await axios.get(
-          `https://project1-backend-qktj.onrender.com/booking/${id}`,
+        const res = await api.get(
+          `/booking/${id}`,
           {
             params: user?.role === "owner" 
               ? {} 
@@ -27,27 +27,19 @@ function BookingDetails() {
     }
   
     if(user) fetchBookings();
-  }, [id,user]);
+  }, [id, user]);
 
   async function handleDelete(bookingId) {
     try {
-      await axios.delete(
-        `https://project1-backend-qktj.onrender.com/booking/${bookingId}`,
-        {
-          data: {
-            userId: user._id, 
-          },
-        }
-      );
+      await api.delete(`/booking/${bookingId}`);
 
       toast.success("Booking Cancelled");
 
-    
       setBookings(bookings.filter((b) => b._id !== bookingId));
 
     } catch (err) {
       console.log(err);
-      toast.error("Not allowed");
+      toast.error(err.response?.data?.message || "Not allowed");
     }
   }
 
