@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 function ListYourVenue() {
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
@@ -32,11 +33,22 @@ function ListYourVenue() {
     location: ""
   });
 
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+
   function handleChange(e) {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+  }
+
+  function handleImageChange(e) {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
   }
 
   async function handleSubmit(e) {
@@ -52,13 +64,30 @@ function ListYourVenue() {
       }
 
       await api.post("/airbnb/list-your-venue", formData);
+      setLoading(true);
+
+      const submitData = new FormData();
+      submitData.append("title", formData.title);
+      submitData.append("description", formData.description);
+      submitData.append("price", formData.price);
+      submitData.append("country", formData.country);
+      submitData.append("location", formData.location);
+
+      if (imageFile) {
+        submitData.append("image", imageFile);
+      }
+
+      await api.post("/airbnb/list-your-venue", submitData);
 
       toast.success("Listing added successfully!");
       navigate("/airbnb/all-listing");
 
     } catch (err) {
       console.log(err);
+      console.error(err);
       toast.error(err.response?.data?.message || "Something went wrong!");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -97,14 +126,29 @@ function ListYourVenue() {
 
               <div className="mb-3">
                 <label className="form-label">Image Link</label>
+                <label className="form-label">Upload Venue Image</label>
                 <input
                   type="url"
+                  type="file"
                   className="form-control"
                   name="image"
                   value={formData.image}
                   onChange={handleChange}
+                  accept="image/*"
+                  onChange={handleImageChange}
                   required
                 />
+                {imagePreview && (
+                  <div className="mt-3 text-center">
+                    <p className="text-muted mb-1 small">Image Preview:</p>
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="img-thumbnail rounded"
+                      style={{ maxHeight: "200px", objectFit: "cover", width: "100%" }}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="row">
@@ -148,6 +192,12 @@ function ListYourVenue() {
               <div className="d-grid">
                 <button type="submit" className="btn btn-danger btn-lg">
                   Add New Listing
+                <button
+                  type="submit"
+                  className="btn btn-danger btn-lg"
+                  disabled={loading}
+                >
+                  {loading ? "Uploading & Adding..." : "Add New Listing"}
                 </button>
               </div>
 
