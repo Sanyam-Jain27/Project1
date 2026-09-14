@@ -4,10 +4,8 @@ import api from "../api";
 import { toast } from "react-toastify";
 
 function ListYourVenue() {
-
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -27,7 +25,6 @@ function ListYourVenue() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    image: "",
     price: "",
     country: "",
     location: ""
@@ -63,7 +60,6 @@ function ListYourVenue() {
         return;
       }
 
-      await api.post("/airbnb/list-your-venue", formData);
       setLoading(true);
 
       const submitData = new FormData();
@@ -83,8 +79,7 @@ function ListYourVenue() {
       navigate("/airbnb/all-listing");
 
     } catch (err) {
-      console.log(err);
-      console.error(err);
+      console.error("Add listing error:", err);
       toast.error(err.response?.data?.message || "Something went wrong!");
     } finally {
       setLoading(false);
@@ -125,15 +120,10 @@ function ListYourVenue() {
               </div>
 
               <div className="mb-3">
-                <label className="form-label">Image Link</label>
                 <label className="form-label">Upload Venue Image</label>
                 <input
-                  type="url"
                   type="file"
                   className="form-control"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleChange}
                   accept="image/*"
                   onChange={handleImageChange}
                   required
@@ -190,8 +180,6 @@ function ListYourVenue() {
               </div>
 
               <div className="d-grid">
-                <button type="submit" className="btn btn-danger btn-lg">
-                  Add New Listing
                 <button
                   type="submit"
                   className="btn btn-danger btn-lg"

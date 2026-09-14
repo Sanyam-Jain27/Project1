@@ -1,13 +1,9 @@
-import { useState,useEffect } from "react";
-import { useParams } from "react-router-dom"
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api";
 import { toast } from "react-toastify";
 
 function Edit() {
-    const { id } = useParams()
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -15,13 +11,11 @@ function Edit() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    image: "",
     price: "",
     country: "",
     location: ""
   });
 
-   const [item , setItem] = useState(null) ;
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [item, setItem] = useState(null);
@@ -44,7 +38,6 @@ function Edit() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await api.patch(`/airbnb/edit/${id}`, formData);
       setLoading(true);
 
       const submitData = new FormData();
@@ -61,26 +54,15 @@ function Edit() {
       await api.patch(`/airbnb/edit/${id}`, submitData);
 
       toast.success("Listing Edited successfully!");
-      navigate(`/airbnb/full-view/${id}`); 
       navigate(`/airbnb/full-view/${id}`);
     } catch (err) {
-      console.log(err);
-      console.error(err);
+      console.error("Edit error:", err);
       toast.error(err.response?.data?.message || "Something went wrong!");
     } finally {
       setLoading(false);
     }
   }
 
-  useEffect(()=>{
-
-    async function fetchData(){
-       try {
-         const res = await api.get(`/airbnb/full-view/${id}`);
-         setItem(res.data);
-       } catch(err) {
-         console.log(err);
-       }
   useEffect(() => {
     async function fetchData() {
       try {
@@ -94,16 +76,13 @@ function Edit() {
           location: res.data.location || ""
         });
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     }
 
-    fetchData()
     fetchData();
   }, [id]);
 
- },[id])
- if(!item) return <h2>Loading...</h2>
   if (!item) return <h2>Loading...</h2>;
 
   return (
@@ -141,19 +120,11 @@ function Edit() {
                 />
               </div>
 
-
               <div className="mb-3">
-                <label htmlFor="image" className="form-label">Image Link</label>
                 <label className="form-label">Update Image (Optional)</label>
                 <input
-                  type="url"
                   type="file"
                   className="form-control"
-                  id="image"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleChange}
-                  placeholder={`${item.img}`}
                   accept="image/*"
                   onChange={handleImageChange}
                 />
@@ -170,7 +141,6 @@ function Edit() {
                 </div>
               </div>
 
-          
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <label htmlFor="price" className="form-label">Price</label>
@@ -213,7 +183,6 @@ function Edit() {
               </div>
 
               <div className="d-grid">
-                <button type="submit" className="btn btn-danger btn-lg">Edit</button>
                 <button
                   type="submit"
                   className="btn btn-danger btn-lg"
