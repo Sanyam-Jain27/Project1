@@ -7,8 +7,6 @@ const controller = require("../controllers/listingcontroller");
 // routes
 router.get("/all-listing", controller.getAllListings);
 router.get("/full-view/:id", controller.getListingById);
-router.post("/list-your-venue", auth, controller.createListing);
-router.patch("/edit/:id", auth, controller.updateListing);
 router.post("/list-your-venue", auth, upload.single("image"), controller.createListing);
 router.patch("/edit/:id", auth, upload.single("image"), controller.updateListing);
 router.delete("/delete/:id", auth, controller.deleteListing);

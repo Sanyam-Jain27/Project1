@@ -4,6 +4,10 @@ const cloudinary = require("../config/cloudinary");
 // Helper function to upload file buffer to Cloudinary
 const uploadToCloudinary = (fileBuffer, folder = "project1_venues") => {
     return new Promise((resolve, reject) => {
+        if (!process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_SECRET) {
+            return reject(new Error("Cloudinary credentials are not configured in server environment variables."));
+        }
+
         const stream = cloudinary.uploader.upload_stream(
             { folder, resource_type: "image" },
             (error, result) => {
@@ -17,30 +21,27 @@ const uploadToCloudinary = (fileBuffer, folder = "project1_venues") => {
 
 // GET all listings
 exports.getAllListings = async (req, res) => {
-    const cards = await Card.find();
-    res.json(cards);
     try {
         const cards = await Card.find();
         res.json(cards);
     } catch (err) {
+        console.error("Get listings error:", err);
         res.status(500).json({ message: "Error fetching listings", error: err.message });
     }
 };
 
 // GET single listing
 exports.getListingById = async (req, res) => {
-    const { id } = req.params;
     try {
         const { id } = req.params;
 
-    const card = await Card.findById(id).populate("owner");
-    res.json(card);
         const card = await Card.findById(id).populate("owner");
         if (!card) {
             return res.status(404).json({ message: "Listing not found" });
         }
         res.json(card);
     } catch (err) {
+        console.error("Get listing error:", err);
         res.status(500).json({ message: "Error fetching listing", error: err.message });
     }
 };
@@ -68,7 +69,6 @@ exports.createListing = async (req, res) => {
             img: image,
             tittle: title,
             description,
-            price,
             price: price !== undefined ? Number(price) : 0,
             country,
             location,
@@ -78,7 +78,8 @@ exports.createListing = async (req, res) => {
 
         res.status(201).json(newCard);
     } catch (err) {
-        res.status(500).json({ message: "Error creating listing", error: err.message });
+        console.error("Create listing error:", err);
+        res.status(500).json({ message: err.message || "Error creating listing" });
     }
 };
 
@@ -105,11 +106,8 @@ exports.updateListing = async (req, res) => {
         }
 
         const updatedListing = {
-            tittle: req.body.tittle || card.tittle,
             tittle: req.body.title || req.body.tittle || card.tittle,
             description: req.body.description || card.description,
-            img: req.body.image || req.body.img || card.img,
-            price: req.body.price !== undefined ? req.body.price : card.price,
             img: imageUrl,
             price: req.body.price !== undefined ? Number(req.body.price) : card.price,
             country: req.body.country || card.country,
@@ -120,7 +118,8 @@ exports.updateListing = async (req, res) => {
 
         res.json(updated);
     } catch (err) {
-        res.status(500).json({ message: "Error updating listing", error: err.message });
+        console.error("Update listing error:", err);
+        res.status(500).json({ message: err.message || "Error updating listing" });
     }
 };
 
@@ -142,6 +141,7 @@ exports.deleteListing = async (req, res) => {
 
         res.json({ message: "Deleted successfully" });
     } catch (err) {
+        console.error("Delete listing error:", err);
         res.status(500).json({ message: "Error deleting listing", error: err.message });
     }
 };
