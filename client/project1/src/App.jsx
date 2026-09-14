@@ -20,6 +20,7 @@ function App(){
      <ToastContainer position="top-right" autoClose={2000} />
     <Navbar/>
     <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/airbnb/all-listing" element={<AllList />} />
         <Route path="/airbnb/list-your-venue" element={<ListYourVenue />} />
         <Route path="/airbnb" element={<Home />} />

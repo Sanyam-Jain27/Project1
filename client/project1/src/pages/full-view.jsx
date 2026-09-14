@@ -257,6 +257,9 @@ function FullView(){
                     <p><strong>{r.user.name || "Anonymous"}</strong></p>
                     <p>⭐ {r.rating}</p>
                     <p>{r.comment}</p>
+                    <p><strong>{r?.user?.name || "Anonymous"}</strong></p>
+                    <p>⭐ {r?.rating}</p>
+                    <p>{r?.comment}</p>
                   </div>
                 ))}
 
