@@ -50,8 +50,26 @@ useEffect(() => {
                 </NavLink>
 
                 <NavLink
-                  to="/airbnb/list-your-home"
+                  to="#"
                   className="btn btn-outline-dark btn-lg"
+                  onClick={(e) => {
+                    e.preventDefault();
+
+                    const user = JSON.parse(localStorage.getItem("user"));
+
+                    if (!user) {
+                      alert("Login first");
+                      navigate("/airbnb/login");
+                      return;
+                    }
+
+                    if (user.role !== "owner") {
+                      alert("Only owners can list property");
+                      return;
+                    }
+
+                    navigate("/airbnb/list-your-venue");
+                  }}
                 >
                   List Your Venue
                 </NavLink>
@@ -268,8 +286,26 @@ useEffect(() => {
           </p>
 
           <NavLink
-            to="/airbnb/list-your-home"
+            to="#"
             className="btn btn-light btn-lg mt-2"
+            onClick={(e) => {
+              e.preventDefault();
+
+              const user = JSON.parse(localStorage.getItem("user"));
+
+              if (!user) {
+                alert("Login first");
+                navigate("/airbnb/login");
+                return;
+              }
+
+              if (user.role !== "owner") {
+                alert("Only owners can list property");
+                return;
+              }
+
+              navigate("/airbnb/list-your-venue");
+            }}
           >
             List Your Venue
           </NavLink>
